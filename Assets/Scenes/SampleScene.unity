@@ -372,8 +372,13 @@ MonoBehaviour:
   _bpm: 120
   _kickClip: {fileID: 8300000, guid: 1823c03244f338243b27b4bdffd19da6, type: 3}
   _snareClip: {fileID: 8300000, guid: 63015066dd967d344bf7d4694360e3f3, type: 3}
-  _kickPattern: 01010101010101010101010101010101
-  _snarePattern: 00010001000100010001000100010001
+  _kickPattern: 01010100010000000100000001000000
+  _snarePattern: 00010001000000000100010001000100
+  _instruments:
+  - _mute: 0
+    _instrumentType: 0
+    _volume: 0
+  _initialPoolSize: 0
 --- !u!4 &1022188766
 Transform:
   m_ObjectHideFlags: 0

@@ -1,18 +1,24 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicGenerator : MonoBehaviour
 {
     [Header("Tempo")]
-    [Range(20f, 360f)] public float _bpm = 120f;
+    [SerializeField][Range(20f, 360f)] private double _bpm = 120f;
 
     [Header("Samples")]
-    public AudioClip _kickClip;
-    public AudioClip _snareClip;
+    [SerializeField] private AudioClip _kickClip;
+    [SerializeField] private AudioClip _snareClip;
 
     [Header("Patterns (16 steps)")]
-    public bool[] _kickPattern = new bool[16];
-    public bool[] _snarePattern = new bool[16];
+    [SerializeField] private bool[] _kickPattern = new bool[16];
+    [SerializeField] private bool[] _snarePattern = new bool[16];
+
+    [Header("Instruments")]
+    [SerializeField] private List<Instrument> _instruments;
+
+    [Header("Audio Source Pooling")]
+    [SerializeField] private int _initialPoolSize;
 
     private AudioSource _kickSource;
     private AudioSource _snareSource;
@@ -30,10 +36,26 @@ public class MusicGenerator : MonoBehaviour
         _kickSource.clip = _kickClip;
         _snareSource.clip = _snareClip;
 
+        RandomizeSequence();
+
         // First step at current dspTime
         _nextStepTime = AudioSettings.dspTime;
+    }
 
-        // Start scheduling
+    [ContextMenu("Randomize Sequence")]
+    private void RandomizeSequence()
+    {
+        for (int x = 0; x < _snarePattern.Length; x++)
+        {
+            _snarePattern[x] = UnityEngine.Random.value < 0.5f;
+        }
+    }
+
+    [ContextMenu("Start Beat")]
+    public void StartBeat()
+    {
+        _stepIndex = 0;
+        _nextStepTime = AudioSettings.dspTime;
         ScheduleNextStep();
     }
 
@@ -55,7 +77,7 @@ public class MusicGenerator : MonoBehaviour
         _stepIndex = (_stepIndex + 1) % 16;
 
         // Recalculate interval in case bpm changed
-        _stepInterval = 60.0f / _bpm;
+        _stepInterval = 60.0 / _bpm;
 
         // Calculate exact timing of next beat
         _nextStepTime = AudioSettings.dspTime + _stepInterval;
