@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 [Serializable]
-public class SoundData
+public class AudioData
 {
     public AudioClip clip;
     public AudioMixerGroup mixerGroup;

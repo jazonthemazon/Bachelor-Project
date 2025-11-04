@@ -35,11 +35,6 @@ public class MusicGenerator : MonoBehaviour
 
         _kickSource.clip = _kickClip;
         _snareSource.clip = _snareClip;
-
-        RandomizeSequence();
-
-        // First step at current dspTime
-        _nextStepTime = AudioSettings.dspTime;
     }
 
     [ContextMenu("Randomize Sequence")]
@@ -47,7 +42,7 @@ public class MusicGenerator : MonoBehaviour
     {
         for (int x = 0; x < _snarePattern.Length; x++)
         {
-            _snarePattern[x] = UnityEngine.Random.value < 0.5f;
+            _snarePattern[x] = Random.value < 0.5f;
         }
     }
 
