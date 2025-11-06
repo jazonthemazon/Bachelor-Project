@@ -1,14 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MusicGenerator : MonoBehaviour
 {
+    [Header("Beat Active")]
+    [SerializeField] private bool _beatActive;
+    
     [Header("Tempo")]
-    [SerializeField][Range(20f, 360f)] private double _bpm = 120f;
+    [SerializeField][Min(1)] private double _bpm = 120;
 
     [Header("Samples")]
-    [SerializeField] private AudioClip _kickClip;
-    [SerializeField] private AudioClip _snareClip;
+    [SerializeField] private AudioData _kickAudio;
 
     [Header("Patterns (16 steps)")]
     [SerializeField] private bool[] _kickPattern = new bool[16];
@@ -17,24 +21,13 @@ public class MusicGenerator : MonoBehaviour
     [Header("Instruments")]
     [SerializeField] private List<Instrument> _instruments;
 
-    [Header("Audio Source Pooling")]
-    [SerializeField] private int _initialPoolSize;
-
-    private AudioSource _kickSource;
-    private AudioSource _snareSource;
-
     private double _stepInterval;
     private double _nextStepTime;
-    private int _stepIndex = 0;
+    private int _stepIndex;
 
-    void Start()
+    private void Start()
     {
-        // Create audio sources
-        _kickSource = gameObject.AddComponent<AudioSource>();
-        _snareSource = gameObject.AddComponent<AudioSource>();
-
-        _kickSource.clip = _kickClip;
-        _snareSource.clip = _snareClip;
+        StartBeat();
     }
 
     [ContextMenu("Randomize Sequence")]
@@ -46,7 +39,6 @@ public class MusicGenerator : MonoBehaviour
         }
     }
 
-    [ContextMenu("Start Beat")]
     public void StartBeat()
     {
         _stepIndex = 0;
@@ -57,15 +49,12 @@ public class MusicGenerator : MonoBehaviour
     private void ScheduleNextStep()
     {
         // Schedule kick
-        if (_kickPattern[_stepIndex])
+        if (_beatActive)
         {
-            _kickSource.PlayScheduled(_nextStepTime);
-        }
-
-        // Schedule snare
-        if (_snarePattern[_stepIndex])
-        {
-            _snareSource.PlayScheduled(_nextStepTime);
+            if (_kickPattern[_stepIndex])
+            {
+                AudioManager.Instance.CreateAudio(_kickAudio).PlayScheduled(_nextStepTime);
+            }
         }
 
         // Advance to next step

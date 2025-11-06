@@ -119,6 +119,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &198895398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198895400}
+  - component: {fileID: 198895399}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &198895399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198895398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708846e08a7a1544d956791e90003e7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  _audioEmitterPrefab: {fileID: 196302620763107320, guid: aaf465149e209564585d2fc4f2523cb6, type: 3}
+  _collectionCheck: 1
+  _defaultCapacity: 10
+  _maxPoolSize: 100
+--- !u!4 &198895400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198895398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,15 +418,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicGenerator
   _bpm: 120
-  _kickClip: {fileID: 8300000, guid: 1823c03244f338243b27b4bdffd19da6, type: 3}
-  _snareClip: {fileID: 8300000, guid: 63015066dd967d344bf7d4694360e3f3, type: 3}
-  _kickPattern: 01010100010000000100000001000000
+  _kickAudio:
+    clip: {fileID: 8300000, guid: 1823c03244f338243b27b4bdffd19da6, type: 3}
+    mixerGroup: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+  _kickPattern: 01010101010101010101010101010101
   _snarePattern: 00010001000000000100010001000100
   _instruments:
   - _mute: 0
     _instrumentType: 0
     _volume: 0
-  _initialPoolSize: 0
 --- !u!4 &1022188766
 Transform:
   m_ObjectHideFlags: 0
@@ -401,3 +451,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1022188766}
+  - {fileID: 198895400}
