@@ -417,14 +417,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece373b1ee5d43f4b8337da060a752c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicGenerator
+  _metronomeActive: 0
+  _metronomeAudio:
+    clip: {fileID: 8300000, guid: 6d8058c032a404c4581e06e63391b1d4, type: 3}
+    mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
   _bpm: 120
-  _kickAudio:
-    clip: {fileID: 8300000, guid: 1823c03244f338243b27b4bdffd19da6, type: 3}
-    mixerGroup: {fileID: 0}
-    loop: 0
-    playOnAwake: 0
-  _kickPattern: 01010101010101010101010101010101
-  _snarePattern: 00010001000000000100010001000100
   _instruments:
   - _mute: 0
     _instrumentType: 0

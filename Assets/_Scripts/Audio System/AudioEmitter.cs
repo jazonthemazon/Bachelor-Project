@@ -16,10 +16,7 @@ public class AudioEmitter : MonoBehaviour
 
     public void Play()
     {
-        if (_playingCoroutine != null)
-        {
-            StopCoroutine(_playingCoroutine);
-        }
+        if (_playingCoroutine != null) StopCoroutine(_playingCoroutine);
 
         _audioSource.Play();
         _playingCoroutine = StartCoroutine(WaitForSoundToEnd());
@@ -27,10 +24,7 @@ public class AudioEmitter : MonoBehaviour
     
     public void PlayScheduled(double time)
     {
-        if (_playingCoroutine != null)
-        {
-            StopCoroutine(_playingCoroutine);
-        }
+        if (_playingCoroutine != null) StopCoroutine(_playingCoroutine);
 
         _audioSource.PlayScheduled(time);
         _playingCoroutine = StartCoroutine(WaitForSoundToEnd());
@@ -59,7 +53,5 @@ public class AudioEmitter : MonoBehaviour
         Data = data;
         _audioSource.clip = data.clip;
         _audioSource.outputAudioMixerGroup = data.mixerGroup;
-        _audioSource.loop = data.loop;
-        _audioSource.playOnAwake = data.playOnAwake;
     }
 }

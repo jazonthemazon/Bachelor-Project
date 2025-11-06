@@ -18,19 +18,19 @@ public class AudioPlayer
 
     public void Play()
     {
-        AudioEmitter audioEmitter = AudioManager.Instance.GetAudioEmitter();
-        audioEmitter.Initialize(_audioData);
-        audioEmitter.transform.position = _position;
-
-        audioEmitter.Play();
+        GetAndInitializeAudioEmitter().Play();
     }
     
     public void PlayScheduled(double time)
     {
+        GetAndInitializeAudioEmitter().PlayScheduled(time);
+    }
+
+    private AudioEmitter GetAndInitializeAudioEmitter()
+    {
         AudioEmitter audioEmitter = AudioManager.Instance.GetAudioEmitter();
         audioEmitter.Initialize(_audioData);
         audioEmitter.transform.position = _position;
-
-        audioEmitter.PlayScheduled(time);
+        return audioEmitter;
     }
 }

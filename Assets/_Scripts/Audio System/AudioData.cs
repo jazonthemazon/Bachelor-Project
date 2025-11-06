@@ -7,6 +7,4 @@ public class AudioData
 {
     public AudioClip clip;
     public AudioMixerGroup mixerGroup;
-    public bool loop;
-    public bool playOnAwake;
 }
