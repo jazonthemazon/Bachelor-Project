@@ -417,11 +417,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece373b1ee5d43f4b8337da060a752c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicGenerator
-  _metronomeActive: 0
-  _metronomeAudio:
+  _metronomeActive: 1
+  _metronomeAudioOnFirstBeat:
     clip: {fileID: 8300000, guid: 6d8058c032a404c4581e06e63391b1d4, type: 3}
     mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
+  _metronomeAudio:
+    clip: {fileID: 8300000, guid: 4d2bd223a6d30ac4f8128916d49d82e7, type: 3}
+    mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
   _bpm: 120
+  _timeSignature: 4
+  _swing: 50
   _instruments:
   - _mute: 0
     _instrumentType: 0
