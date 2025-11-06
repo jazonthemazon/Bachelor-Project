@@ -3,14 +3,17 @@ using UnityEngine;
 
 public class MusicGenerator : MonoBehaviour
 {
+    private enum MetronomeBeats { WholeNotes, HalfNotes, QuarterNotes, SixteenthNotes }
+    
     [Header("Metronome")]
     [SerializeField] private bool _metronomeActive;
+    [SerializeField] private MetronomeBeats _metronomeBeats;
     [SerializeField] private AudioData _metronomeAudioOnFirstBeat;
     [SerializeField] private AudioData _metronomeAudio;
-    
+
     [Header("Tempo")]
     [SerializeField][Range(10, 500)] private double _bpm = 120;
-    [SerializeField][Min(1)] private int _timeSignature;
+    [SerializeField][Min(2)] private int _timeSignature;
     [SerializeField][Range(50f, 99f)] private double _swing;
 
     [Header("Instruments")]
@@ -19,7 +22,7 @@ public class MusicGenerator : MonoBehaviour
     private double _stepInterval;
     private double _nextStepTime;
     private int _stepIndex;
-
+    
     private void Start()
     {
         StartBeat();
@@ -37,21 +40,25 @@ public class MusicGenerator : MonoBehaviour
         // Play Metronome Audio
         if (_metronomeActive)
         {
-            AudioData metronomeAudio = _stepIndex == 0 ? _metronomeAudioOnFirstBeat : _metronomeAudio;
+            AudioData metronomeAudio = _stepIndex % _timeSignature == 0 ? _metronomeAudioOnFirstBeat : _metronomeAudio;
             AudioManager.Instance.CreateAudio(metronomeAudio).PlayScheduled(_nextStepTime);
         }
 
         // Advance to next step
-        _stepIndex = (_stepIndex + 1) % _timeSignature;
+        _stepIndex++;
 
-        // Recalculate interval in case bpm changed
-        _stepInterval = 60.0 / _bpm;
+        // Recalculate base interval in case bpm changed
+        double baseInterval = 60.0 / _bpm;
         
         // calculate swing
-        double stepIntervalWithSwing = _stepInterval * (_swing / 50.0);
-        
-        // add swing to interval
-        _stepInterval = _stepIndex % 2 != 0 ? stepIntervalWithSwing : _stepInterval * 2 - stepIntervalWithSwing;
+        if (_timeSignature % 2 == 0)
+        {
+            _stepInterval = baseInterval * ((_stepIndex % 2 != 0 ? _swing : 100.0 - _swing) / 50.0);
+        }
+        else
+        {
+            _stepInterval = baseInterval;
+        }
 
         // Calculate exact timing of next beat
         _nextStepTime = AudioSettings.dspTime + _stepInterval;
