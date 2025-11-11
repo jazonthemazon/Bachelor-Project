@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(CsoundUnity))]
 public class Sequencer : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _cubes;
-    [FormerlySerializedAs("_tempo")] [SerializeField] [Range(0, 1000)] private float _BeatsPerMinute;
+    [SerializeField] [Range(0, 1000)] private float _beatsPerMinute;
 
     private CsoundUnity _csound;
     private int _currentBeat;
@@ -15,13 +13,12 @@ public class Sequencer : MonoBehaviour
     private void Start()
     {
         _csound = GetComponent<CsoundUnity>();
-        _csound.SetChannel("tempo", _BeatsPerMinute / 60f);
+        _csound.SetChannel("tempo", _beatsPerMinute / 60f);
     }
 
     private void Update()
     {
-        _BeatsPerMinute -= Time.deltaTime * 40f;
-        _csound.SetChannel("tempo", _BeatsPerMinute / 60f);
+        _csound.SetChannel("tempo", _beatsPerMinute / 60f);
         if (_currentBeat == _csound.GetChannel("beat"))
         {
             ResizeCube(_currentBeat);
