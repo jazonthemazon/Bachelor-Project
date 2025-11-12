@@ -17,28 +17,30 @@ nchnls = 2
 0dbfs  = 1
 
 instr Sequencer
-    kNotes[] fillarray 1, 1, 1, 1, 1, 1, 1, 1
+    kSequence[] fillarray 1, 1, 1, 1, 1, 1, 1, 1
     kBeat init 0
+    
     kTempo chnget "tempo"
+    kPitch chnget "pitch"
     
     if metro(kTempo) == 1 then
-        if kNotes[kBeat] == 1 then
-            event "i", "Synth", 0, 5, kBeat
+        if kSequence[kBeat] == 1 then
+            event "i", "Synth", 0, 5, kPitch
         endif
         chnset kBeat, "beat"
-        kBeat = (kBeat < 7 ? kBeat + 1 : 0)
+        kBeat = (kBeat + 1) % 8
     endif
     
-    kUpdateIndex chnget "updateTable"
+    kUpdateIndex chnget "updateSequence"
     
     if changed(kUpdateIndex) == 1 then
-        kNotes[kUpdateIndex] = kNotes[kUpdateIndex] == 1 ? 0 : 1
+        kSequence[kUpdateIndex] = kSequence[kUpdateIndex] == 1 ? 0 : 1
     endif
 endin
 
 instr Synth
-    a1 expon .1, p3, 0.001
-    aOut oscili a1, 110 + p4 * 110
+    a1 expon .1, p3, 0.0001
+    aOut oscili a1, p4
     outs aOut, aOut
 endin
 
