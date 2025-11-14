@@ -386,9 +386,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4defa9c706f627d40bb6aa90f06dc9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _beatsPerMinute: 120
-  _mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
+  _beatsPerMinute: 240
+  _swing: 50
   _a4Frequency: 440
+  _rootNote: 0
+  _scale: 0
+  _range: {x: 2, y: 6}
+  _mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
 --- !u!114 &1664142304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,15 +422,14 @@ MonoBehaviour:
     Non-realtime ouput leave only the line below:\r\n; -o t.wav -W ;;; for file output
     any platform\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr = 48000\r\nksmps =
     32\r\nnchnls = 2\r\n0dbfs  = 1\r\n\r\ninstr Sequencer\r\n    kSequence[] fillarray
-    1, 1, 1, 1, 1, 1, 1, 1\r\n    kNotes[] fillarray 261.63, 293.66, 329.63, 349.23,
-    392, 440, 493.88, 523.25\r\n    kBeat init 0\r\n    kTempo chnget \"tempo\"\r\n   
-    \r\n    if metro(kTempo) == 1 then\r\n        if kSequence[kBeat] == 1 then\r\n           
-    event \"i\", \"Synth\", 0, 5, kNotes[kBeat]\r\n        endif\r\n        chnset
-    kBeat, \"beat\"\r\n        kBeat = (kBeat + 1) % 8\r\n    endif\r\n    \r\n   
-    kUpdateIndex chnget \"updateSequence\"\r\n    \r\n    if changed(kUpdateIndex)
-    == 1 then\r\n        kSequence[kUpdateIndex] = kSequence[kUpdateIndex] == 1 ?
-    0 : 1\r\n    endif\r\nendin\r\n\r\ninstr Synth\r\n    a1 expon .1, p3, 0.0001\r\n   
-    aOut oscili a1, p4\r\n    outs aOut, aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni
+    1, 1, 1, 1, 1, 1, 1, 1\r\n    kBeat init 0\r\n    \r\n    kTempo chnget \"tempo\"\r\n   
+    kPitch chnget \"pitch\"\r\n    \r\n    if metro(kTempo) == 1 then\r\n       
+    if kSequence[kBeat] == 1 then\r\n            event \"i\", \"Synth\", 0, 5, kPitch\r\n       
+    endif\r\n        chnset kBeat, \"beat\"\r\n        kBeat = (kBeat + 1) % 8\r\n   
+    endif\r\n    \r\n    kUpdateIndex chnget \"updateSequence\"\r\n    \r\n    if
+    changed(kUpdateIndex) == 1 then\r\n        kSequence[kUpdateIndex] = kSequence[kUpdateIndex]
+    == 1 ? 0 : 1\r\n    endif\r\nendin\r\n\r\ninstr Synth\r\n    a1 expon .1, p3,
+    0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut, aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni
     \"Sequencer\" 0 [3600 * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
   _csoundFileName: Sequencer.csd
   _csoundAsset: {fileID: 102900000, guid: 447d0a095003c1e42831f4e504becc5b, type: 3}
