@@ -1,13 +1,9 @@
 <Cabbage>
-
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
-; Select audio/midi flags here according to platform
--odac     ;;;realtime audio out
-;-iadc    ;;;uncomment -iadc if RT audio input is needed too
-; For Non-realtime ouput leave only the line below:
-; -o t.wav -W ;;; for file output any platform
+-odac
+--env:SSDIR+=../../../Audio/Samples
 </CsOptions>
 <CsInstruments>
 
@@ -22,19 +18,16 @@ instr Sequencer
     
     kTempo chnget "tempo"
     kPitch chnget "pitch"
+    kSwing chnget "swing"
+    kSwingDelay init 0
     
     if metro(kTempo) == 1 then
+        kSwingDelay = kBeat % 2 == 0 ? 0 : (1 / kTempo) * ((kSwing - 50) / 50)
+        
         if kSequence[kBeat] == 1 then
-            event "i", "Synth", 0, 5, kPitch
+            event "i", "Synth", kSwingDelay, 5, kPitch
         endif
-        chnset kBeat, "beat"
         kBeat = (kBeat + 1) % 8
-    endif
-    
-    kUpdateIndex chnget "updateSequence"
-    
-    if changed(kUpdateIndex) == 1 then
-        kSequence[kUpdateIndex] = kSequence[kUpdateIndex] == 1 ? 0 : 1
     endif
 endin
 

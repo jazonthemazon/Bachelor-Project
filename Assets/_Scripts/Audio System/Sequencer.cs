@@ -5,13 +5,28 @@ using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public enum Note { C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B }
-public enum Scale { Major, Minor, MajorPentatonic, MinorPentatonic, Blues, Chromatic}
+
+public enum Scale
+{
+    Ionian,
+    Dorian,
+    Phrygian,
+    Lydian,
+    Mixolydian,
+    Aeolian,
+    Locrian,
+    MajorPentatonic,
+    MinorPentatonic,
+    Blues,
+    Chromatic
+}
 
 [RequireComponent(typeof(CsoundUnity))]
 public class Sequencer : MonoBehaviour
 {
     [Header("Tempo")]
     [SerializeField] [Range(0, 1000)] private float _beatsPerMinute;
+    [SerializeField] [Range(50, 99)] private float _swing;
     
     [Header("Notes")]
     [SerializeField] [Range(330, 660)]private double _a4Frequency = 440.0;
@@ -36,6 +51,7 @@ public class Sequencer : MonoBehaviour
     private void Update()
     {
         _csound.SetChannel("tempo", _beatsPerMinute / 60f);
+        _csound.SetChannel("swing", _swing);
         _csound.SetChannel("pitch", GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(_range.x, _range.y + 1)));
     }
 
@@ -45,8 +61,13 @@ public class Sequencer : MonoBehaviour
 
         List<int> noteDegrees = scale switch
         {
-            Scale.Major => new() { 2, 4, 5, 7, 9, 11 },
-            Scale.Minor => new() { 2, 3, 5, 7, 8, 10 },
+            Scale.Ionian => new() { 2, 4, 5, 7, 9, 11 },
+            Scale.Dorian => new() { 2, 3, 5, 7, 9, 10 },
+            Scale.Phrygian => new() { 1, 3, 5, 7, 8, 10 },
+            Scale.Lydian => new() { 2, 4, 6, 7, 9, 11 },
+            Scale.Mixolydian => new() { 2, 4, 5, 7, 9, 10 },
+            Scale.Aeolian => new() { 2, 3, 5, 7, 8, 10 },
+            Scale.Locrian => new() { 1, 3, 5, 6, 8, 10 },
             Scale.MajorPentatonic => new() { 2, 4, 7, 9 },
             Scale.MinorPentatonic => new() { 3, 5, 7, 10 },
             Scale.Blues => new() { 3, 5, 6, 7, 10 },

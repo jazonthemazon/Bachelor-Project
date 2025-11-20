@@ -386,12 +386,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4defa9c706f627d40bb6aa90f06dc9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _beatsPerMinute: 240
-  _swing: 50
+  _beatsPerMinute: 180
+  _swing: 0
   _a4Frequency: 440
   _rootNote: 0
   _scale: 0
-  _range: {x: 2, y: 6}
+  _range: {x: 3, y: 6}
   _mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
 --- !u!114 &1664142304
 MonoBehaviour:
@@ -416,21 +416,17 @@ MonoBehaviour:
   csoundScore: 
   environmentSettings: []
   _csoundFileGUID: 447d0a095003c1e42831f4e504becc5b
-  _csoundString: "<Cabbage>\r\n\r\n</Cabbage>\r\n<CsoundSynthesizer>\r\n<CsOptions>\r\n;
-    Select audio/midi flags here according to platform\r\n-odac     ;;;realtime audio
-    out\r\n;-iadc    ;;;uncomment -iadc if RT audio input is needed too\r\n; For
-    Non-realtime ouput leave only the line below:\r\n; -o t.wav -W ;;; for file output
-    any platform\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr = 48000\r\nksmps =
-    32\r\nnchnls = 2\r\n0dbfs  = 1\r\n\r\ninstr Sequencer\r\n    kSequence[] fillarray
-    1, 1, 1, 1, 1, 1, 1, 1\r\n    kBeat init 0\r\n    \r\n    kTempo chnget \"tempo\"\r\n   
-    kPitch chnget \"pitch\"\r\n    \r\n    if metro(kTempo) == 1 then\r\n       
-    if kSequence[kBeat] == 1 then\r\n            event \"i\", \"Synth\", 0, 5, kPitch\r\n       
-    endif\r\n        chnset kBeat, \"beat\"\r\n        kBeat = (kBeat + 1) % 8\r\n   
-    endif\r\n    \r\n    kUpdateIndex chnget \"updateSequence\"\r\n    \r\n    if
-    changed(kUpdateIndex) == 1 then\r\n        kSequence[kUpdateIndex] = kSequence[kUpdateIndex]
-    == 1 ? 0 : 1\r\n    endif\r\nendin\r\n\r\ninstr Synth\r\n    a1 expon .1, p3,
-    0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut, aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni
-    \"Sequencer\" 0 [3600 * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
+  _csoundString: "<Cabbage>\r\n</Cabbage>\r\n<CsoundSynthesizer>\r\n<CsOptions>\r\n-odac\r\n--env:SSDIR+=../../../Audio/Samples\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr
+    = 48000\r\nksmps = 32\r\nnchnls = 2\r\n0dbfs  = 1\r\n\r\ninstr Sequencer\r\n   
+    kSequence[] fillarray 1, 1, 1, 1, 1, 1, 1, 1\r\n    kBeat init 0\r\n    \r\n   
+    kTempo chnget \"tempo\"\r\n    kPitch chnget \"pitch\"\r\n    kSwing chnget \"swing\"\r\n   
+    kSwingDelay init 0\r\n    \r\n    if metro(kTempo) == 1 then\r\n        kSwingDelay
+    = kBeat % 2 == 0 ? 0 : (1 / kTempo) * ((kSwing - 50) / 50)\r\n        \r\n       
+    if kSequence[kBeat] == 1 then\r\n            event \"i\", \"Synth\", kSwingDelay,
+    5, kPitch\r\n        endif\r\n        kBeat = (kBeat + 1) % 8\r\n    endif\r\nendin\r\n\r\ninstr
+    Synth\r\n    a1 expon .1, p3, 0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut,
+    aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni \"Sequencer\" 0 [3600
+    * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
   _csoundFileName: Sequencer.csd
   _csoundAsset: {fileID: 102900000, guid: 447d0a095003c1e42831f4e504becc5b, type: 3}
   _channels: []
@@ -459,7 +455,7 @@ AudioSource:
   m_GameObject: {fileID: 1664142301}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
