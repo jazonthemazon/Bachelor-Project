@@ -21,18 +21,31 @@ public enum Scale
     Chromatic
 }
 
-[RequireComponent(typeof(CsoundUnity))]
-public class Sequencer : MonoBehaviour
+public enum Speed
 {
-    [Header("Tempo")]
+    SixteenthNotes,
+    EighthNotes,
+    QuarterNotes,
+    HalfNotes,
+    WholeNotes
+}
+
+[RequireComponent(typeof(CsoundUnity))]
+public class Sequencer : Singleton<Sequencer>
+{
+    [Header("Global Tempo")]
     [SerializeField] [Range(0, 1000)] private float _beatsPerMinute;
     [SerializeField] [Range(50, 99)] private float _swing;
     
-    [Header("Notes")]
+    [Header("Global Notes")]
     [SerializeField] [Range(330, 660)]private double _a4Frequency = 440.0;
     [SerializeField] private Note _rootNote;
     [SerializeField] private Scale _scale;
-    [SerializeField] private Vector2Int _range;
+
+    [SerializeField] private List<TunedInstrument> _tunedInstruments;
+    
+    [Header("Drums")]
+    [SerializeField] private bool _drumsActive;
     
     [Header("Mixer")]
     [SerializeField] private AudioMixerGroup _mixerGroup;
@@ -50,9 +63,27 @@ public class Sequencer : MonoBehaviour
 
     private void Update()
     {
+        // update global parameters
         _csound.SetChannel("tempo", _beatsPerMinute / 60f);
         _csound.SetChannel("swing", _swing);
-        _csound.SetChannel("pitch", GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(_range.x, _range.y + 1)));
+
+        if (_tunedInstruments.Count > 8)
+        {
+            Debug.LogError("Too many tuned instruments! Maximum is 8.");
+            return;
+        }
+        
+        // update parameters per instrument
+        for (var i = 0; i < _tunedInstruments.Count; i++)
+        {
+            TunedInstrument tunedInstrument = _tunedInstruments[i];
+            
+            _csound.SetChannel("active" + i, tunedInstrument._active ? 1 : 0);
+            if (!tunedInstrument._active) continue;
+
+            double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument._range.x, tunedInstrument._range.y + 1));
+            _csound.SetChannel("pitch" + i,  frequency);
+        }
     }
 
     private static Note GetRandomNoteInScale(Note rootNote, Scale scale)
@@ -91,5 +122,10 @@ public class Sequencer : MonoBehaviour
     private double GetFrequency(int noteDegree)
     {
         return Math.Round(_a4Frequency * Math.Pow(2.0, (noteDegree - A4Degree) / 12.0), 2);
+    }
+
+    public void SetTempo(float bpm, float changeDuration)
+    {
+        _beatsPerMinute = bpm;
     }
 }

@@ -387,11 +387,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _beatsPerMinute: 180
-  _swing: 0
+  _swing: 50
   _a4Frequency: 440
-  _rootNote: 0
+  _rootNote: 9
   _scale: 0
-  _range: {x: 3, y: 6}
+  _tunedInstruments:
+  - _active: 1
+    _volume: 0
+    _speed: 0
+    _range: {x: 3, y: 4}
+  - _active: 1
+    _volume: 0
+    _speed: 0
+    _range: {x: 5, y: 5}
+  - _active: 1
+    _volume: 0
+    _speed: 0
+    _range: {x: 7, y: 7}
+  _drumsActive: 0
   _mixerGroup: {fileID: 6066403977635502588, guid: eee67c6de14517e4d9ef56d9d3ce6bc9, type: 2}
 --- !u!114 &1664142304
 MonoBehaviour:
@@ -416,17 +429,40 @@ MonoBehaviour:
   csoundScore: 
   environmentSettings: []
   _csoundFileGUID: 447d0a095003c1e42831f4e504becc5b
-  _csoundString: "<Cabbage>\r\n</Cabbage>\r\n<CsoundSynthesizer>\r\n<CsOptions>\r\n-odac\r\n--env:SSDIR+=../../../Audio/Samples\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr
+  _csoundString: "<Cabbage>\r\n</Cabbage>\r\n<CsoundSynthesizer>\r\n<CsOptions>\r\n-odac\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr
     = 48000\r\nksmps = 32\r\nnchnls = 2\r\n0dbfs  = 1\r\n\r\ninstr Sequencer\r\n   
-    kSequence[] fillarray 1, 1, 1, 1, 1, 1, 1, 1\r\n    kBeat init 0\r\n    \r\n   
-    kTempo chnget \"tempo\"\r\n    kPitch chnget \"pitch\"\r\n    kSwing chnget \"swing\"\r\n   
-    kSwingDelay init 0\r\n    \r\n    if metro(kTempo) == 1 then\r\n        kSwingDelay
-    = kBeat % 2 == 0 ? 0 : (1 / kTempo) * ((kSwing - 50) / 50)\r\n        \r\n       
-    if kSequence[kBeat] == 1 then\r\n            event \"i\", \"Synth\", kSwingDelay,
-    5, kPitch\r\n        endif\r\n        kBeat = (kBeat + 1) % 8\r\n    endif\r\nendin\r\n\r\ninstr
-    Synth\r\n    a1 expon .1, p3, 0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut,
-    aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni \"Sequencer\" 0 [3600
-    * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
+    kBeat init 0\r\n    \r\n    ;global parameters\r\n    kTempo chnget \"tempo\"\r\n   
+    kSwing chnget \"swing\"\r\n    kNumberOfTunedInstruments chnget \"numberOfTunedInstruments\"\r\n   
+    \r\n    ;instrument specific parameters\r\n    \r\n    ;active\r\n    kActive0
+    chnget \"active0\"\r\n    kActive1 chnget \"active1\"\r\n    kActive2 chnget
+    \"active2\"\r\n    kActive3 chnget \"active3\"\r\n    kActive4 chnget \"active4\"\r\n   
+    kActive5 chnget \"active5\"\r\n    kActive6 chnget \"active6\"\r\n    kActive7
+    chnget \"active7\"\r\n    \r\n    ;pitches\r\n    kPitch0 chnget \"pitch0\"\r\n   
+    kPitch1 chnget \"pitch1\"\r\n    kPitch2 chnget \"pitch2\"\r\n    kPitch3 chnget
+    \"pitch3\"\r\n    kPitch4 chnget \"pitch4\"\r\n    kPitch5 chnget \"pitch5\"\r\n   
+    kPitch6 chnget \"pitch6\"\r\n    kPitch7 chnget \"pitch7\"\r\n    \r\n    ;volumes\r\n   
+    kVolume0 chnget \"volume0\"\r\n    kVolume1 chnget \"volume1\"\r\n    kVolume2
+    chnget \"volume2\"\r\n    kVolume3 chnget \"volume3\"\r\n    kVolume4 chnget
+    \"volume4\"\r\n    kVolume5 chnget \"volume5\"\r\n    kVolume6 chnget \"volume6\"\r\n   
+    kVolume7 chnget \"volume7\"\r\n    \r\n    kSynthPitch chnget \"synthPitch\"\r\n   
+    kBassPitch chnget \"bassPitch\"\r\n    \r\n    kSwingDelay init 0\r\n    \r\n   
+    if metro(kTempo) == 1 then\r\n        kSwingDelay = kBeat % 2 == 0 ? 0 : (1 /
+    kTempo) * ((kSwing - 50) / 50)\r\n        \r\n            event \"i\", \"Synth\",
+    kSwingDelay, 5, kPitch0\r\n        \r\n        if (kActive1 == 1)\r\n           
+    event \"i\", \"Synth\", kSwingDelay, 5, kPitch1\r\n        endif\r\n        \r\n       
+    if (kActive2 == 1)\r\n            event \"i\", \"Synth\", kSwingDelay, 5, kPitch2\r\n       
+    endif\r\n        \r\n        if (kActive3 == 1)\r\n            event \"i\", \"Synth\",
+    kSwingDelay, 5, kPitch3\r\n        endif\r\n        \r\n        if (kActive4
+    == 1)\r\n            event \"i\", \"Synth\", kSwingDelay, 5, kPitch4\r\n       
+    endif\r\n        \r\n        if (kActive5 == 1)\r\n            event \"i\", \"Synth\",
+    kSwingDelay, 5, kPitch5\r\n        endif\r\n        \r\n        if (kActive6
+    == 1)\r\n            event \"i\", \"Synth\", kSwingDelay, 5, kPitch6\r\n       
+    endif\r\n        \r\n        if (kActive7 == 1)\r\n            event \"i\", \"Synth\",
+    kSwingDelay, 5, kPitch7\r\n        endif\r\n        \r\n        kBeat = kBeat
+    + 1\r\n    endif\r\nendin\r\n\r\ninstr Synth\r\n    a1 expon .1, p3, 0.0001\r\n   
+    aOut oscili a1, p4\r\n    outs aOut, aOut\r\nendin\r\n\r\ninstr Bass\r\n    a1
+    expon .1, p3, 0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut, aOut\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\ni
+    \"Sequencer\" 0 [3600 * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
   _csoundFileName: Sequencer.csd
   _csoundAsset: {fileID: 102900000, guid: 447d0a095003c1e42831f4e504becc5b, type: 3}
   _channels: []
