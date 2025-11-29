@@ -31,6 +31,16 @@ instr Sequencer
     kActive6 chnget "active6"
     kActive7 chnget "active7"
     
+    ;speeds
+    kSpeed0 chnget "speed0"
+    kSpeed1 chnget "speed1"
+    kSpeed2 chnget "speed2"
+    kSpeed3 chnget "speed3"
+    kSpeed4 chnget "speed4"
+    kSpeed5 chnget "speed5"
+    kSpeed6 chnget "speed6"
+    kSpeed7 chnget "speed7"
+    
     ;pitches
     kPitch0 chnget "pitch0"
     kPitch1 chnget "pitch1"
@@ -59,35 +69,35 @@ instr Sequencer
     if metro(kTempo) == 1 then
         kSwingDelay = kBeat % 2 == 0 ? 0 : (1 / kTempo) * ((kSwing - 50) / 50)
         
-        if kActive0 == 1 then
+        if kActive0 == 1 && kBeat % kSpeed0 == 0 then
             event "i", "Synth", kSwingDelay, 5, kPitch0
         endif
         
-        if kActive1 == 1 then
+        if kActive1 == 1 && kBeat % kSpeed1 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch1
         endif
         
-        if kActive2 == 1 then
+        if kActive2 == 1 && kBeat % kSpeed2 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch2
         endif
         
-        if kActive3 == 1 then
+        if kActive3 == 1 && kBeat % kSpeed3 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch3
         endif
         
-        if kActive4 == 1 then
+        if kActive4 == 1 && kBeat % kSpeed4 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch4
         endif
         
-        if kActive5 == 1 then
+        if kActive5 == 1 && kBeat % kSpeed5 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch5
         endif
         
-        if kActive6 == 1 then
+        if kActive6 == 1 && kBeat % kSpeed6 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch6
         endif
         
-        if kActive7 == 1 then
+        if kActive7 == 1 && kBeat % kSpeed7 == 0  then
             event "i", "Synth", kSwingDelay, 5, kPitch7
         endif
         

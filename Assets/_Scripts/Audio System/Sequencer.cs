@@ -64,7 +64,7 @@ public class Sequencer : Singleton<Sequencer>
     private void Update()
     {
         // update global parameters
-        _csound.SetChannel("tempo", _beatsPerMinute / 60f);
+        _csound.SetChannel("tempo", (_beatsPerMinute / 60f) * 4);
         _csound.SetChannel("swing", _swing);
 
         if (_tunedInstruments.Count > 8)
@@ -80,6 +80,18 @@ public class Sequencer : Singleton<Sequencer>
             
             _csound.SetChannel("active" + i, tunedInstrument._active ? 1 : 0);
             if (!tunedInstrument._active) continue;
+
+            int speedDivider = tunedInstrument._speed switch
+            {
+                Speed.SixteenthNotes => 1,
+                Speed.EighthNotes => 2,
+                Speed.QuarterNotes => 4,
+                Speed.HalfNotes => 8,
+                Speed.WholeNotes => 16,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            _csound.SetChannel("speed" + i, speedDivider);
 
             double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument._range.x, tunedInstrument._range.y + 1));
             _csound.SetChannel("pitch" + i,  frequency);
