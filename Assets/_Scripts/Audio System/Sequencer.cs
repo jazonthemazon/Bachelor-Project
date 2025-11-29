@@ -35,10 +35,9 @@ public class Sequencer : Singleton<Sequencer>
 {
     [Header("Global Tempo")]
     [SerializeField] [Range(0, 1000)] private float _beatsPerMinute;
-    [SerializeField] [Range(50, 99)] private float _swing;
     
     [Header("Global Notes")]
-    [SerializeField] [Range(330, 660)]private double _a4Frequency = 440.0;
+    [SerializeField] [Range(330, 660)] private double _a4Frequency = 440.0;
     [SerializeField] private Note _rootNote;
     [SerializeField] private Scale _scale;
 
@@ -65,7 +64,6 @@ public class Sequencer : Singleton<Sequencer>
     {
         // update global parameters
         _csound.SetChannel("tempo", (_beatsPerMinute / 60f) * 4);
-        _csound.SetChannel("swing", _swing);
 
         if (_tunedInstruments.Count > 8)
         {
@@ -80,6 +78,8 @@ public class Sequencer : Singleton<Sequencer>
             
             _csound.SetChannel("active" + i, tunedInstrument._active ? 1 : 0);
             if (!tunedInstrument._active) continue;
+            
+            _csound.SetChannel("prob" + i, tunedInstrument._probability);
 
             int speedDivider = tunedInstrument._speed switch
             {

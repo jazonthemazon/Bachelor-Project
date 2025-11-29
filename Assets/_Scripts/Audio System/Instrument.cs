@@ -5,5 +5,5 @@ using UnityEngine;
 public class Instrument
 {
     public bool _active;
-    public float _volume;
+    [Range(0, 1)] public float _volume = 1f;
 }

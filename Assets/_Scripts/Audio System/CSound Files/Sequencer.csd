@@ -16,8 +16,6 @@ instr Sequencer
     
     ;global parameters
     kTempo chnget "tempo"
-    kSwing chnget "swing"
-    kNumberOfTunedInstruments chnget "numberOfTunedInstruments"
     
     ;instrument specific parameters
     
@@ -30,6 +28,16 @@ instr Sequencer
     kActive5 chnget "active5"
     kActive6 chnget "active6"
     kActive7 chnget "active7"
+    
+    ;probabilities
+    kProb0 chnget "prob0"
+    kProb1 chnget "prob1"
+    kProb2 chnget "prob2"
+    kProb3 chnget "prob3"
+    kProb4 chnget "prob4"
+    kProb5 chnget "prob5"
+    kProb6 chnget "prob6"
+    kProb7 chnget "prob7"
     
     ;speeds
     kSpeed0 chnget "speed0"
@@ -67,38 +75,53 @@ instr Sequencer
     kSwingDelay init 0
     
     if metro(kTempo) == 1 then
-        kSwingDelay = kBeat % 2 == 0 ? 0 : (1 / kTempo) * ((kSwing - 50) / 50)
         
-        if kActive0 == 1 && kBeat % kSpeed0 == 0 then
-            event "i", "Synth", kSwingDelay, 5, kPitch0
+        kRand0 random 0, 1
+        
+        if kActive0 == 1 && kBeat % kSpeed0 == 0 && kRand0 < kProb0 then
+            event "i", "Synth", 0, 5, kPitch0
         endif
         
-        if kActive1 == 1 && kBeat % kSpeed1 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch1
+        kRand1 random 0, 1
+        
+        if kActive1 == 1 && kBeat % kSpeed1 == 0 && kRand1 < kProb1 then
+            event "i", "Synth", 0, 5, kPitch1
         endif
         
-        if kActive2 == 1 && kBeat % kSpeed2 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch2
+        kRand2 random 0, 1
+        
+        if kActive2 == 1 && kBeat % kSpeed2 == 0 && kRand2 < kProb2 then
+            event "i", "Synth", 0, 5, kPitch2
         endif
         
-        if kActive3 == 1 && kBeat % kSpeed3 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch3
+        kRand3 random 0, 1
+        
+        if kActive3 == 1 && kBeat % kSpeed3 == 0 && kRand3 < kProb3 then
+            event "i", "Synth", 0, 5, kPitch3
         endif
         
-        if kActive4 == 1 && kBeat % kSpeed4 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch4
+        kRand4 random 0, 1
+        
+        if kActive4 == 1 && kBeat % kSpeed4 == 0 && kRand4 < kProb4 then
+            event "i", "Synth", 0, 5, kPitch4
         endif
         
-        if kActive5 == 1 && kBeat % kSpeed5 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch5
+        kRand5 random 0, 1
+        
+        if kActive5 == 1 && kBeat % kSpeed5 == 0 && kRand5 < kProb5 then
+            event "i", "Synth", 0, 5, kPitch5
         endif
         
-        if kActive6 == 1 && kBeat % kSpeed6 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch6
+        kRand6 random 0, 1
+        
+        if kActive6 == 1 && kBeat % kSpeed6 == 0 && kRand6 < kProb6 then
+            event "i", "Synth", 0, 5, kPitch6
         endif
         
-        if kActive7 == 1 && kBeat % kSpeed7 == 0  then
-            event "i", "Synth", kSwingDelay, 5, kPitch7
+        kRand7 random 0, 1
+        
+        if kActive7 == 1 && kBeat % kSpeed7 == 0 && kRand7 < kProb7 then
+            event "i", "Synth", 0, 5, kPitch7
         endif
         
         kBeat = kBeat + 1
