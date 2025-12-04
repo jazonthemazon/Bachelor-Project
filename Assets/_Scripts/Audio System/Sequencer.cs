@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public enum Note { C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B }
@@ -18,7 +17,8 @@ public enum Scale
     MajorPentatonic,
     MinorPentatonic,
     Blues,
-    Chromatic
+    Chromatic,
+    OneNote
 }
 
 public enum Speed
@@ -40,14 +40,9 @@ public class Sequencer : Singleton<Sequencer>
     [SerializeField] [Range(330, 660)] private double _a4Frequency = 440.0;
     [SerializeField] private Note _rootNote;
     [SerializeField] private Scale _scale;
-
+    
+    [Header("Tuned Instruments")]
     [SerializeField] private List<TunedInstrument> _tunedInstruments;
-    
-    [Header("Drums")]
-    [SerializeField] private bool _drumsActive;
-    
-    [Header("Mixer")]
-    [SerializeField] private AudioMixerGroup _mixerGroup;
     
     private CsoundUnity _csound;
     private int _currentBeat;
@@ -57,7 +52,6 @@ public class Sequencer : Singleton<Sequencer>
     private void Start()
     {
         _csound = GetComponent<CsoundUnity>();
-        GetComponent<AudioSource>().outputAudioMixerGroup = _mixerGroup;
     }
 
     private void Update()
@@ -76,12 +70,14 @@ public class Sequencer : Singleton<Sequencer>
         {
             TunedInstrument tunedInstrument = _tunedInstruments[i];
             
-            _csound.SetChannel("active" + i, tunedInstrument._active ? 1 : 0);
-            if (!tunedInstrument._active) continue;
+            _csound.SetChannel($"active{i}", tunedInstrument.Active ? 1 : 0);
+            if (!tunedInstrument.Active) continue;
             
-            _csound.SetChannel("prob" + i, tunedInstrument._probability);
+            _csound.SetChannel($"prob{i}", tunedInstrument.Probability);
+            
+            _csound.SetChannel($"instrument{i}", (int)tunedInstrument.InstrumentType + 2);
 
-            int speedDivider = tunedInstrument._speed switch
+            int speedDivider = tunedInstrument.Speed switch
             {
                 Speed.SixteenthNotes => 1,
                 Speed.EighthNotes => 2,
@@ -91,10 +87,12 @@ public class Sequencer : Singleton<Sequencer>
                 _ => throw new ArgumentOutOfRangeException()
             };
             
-            _csound.SetChannel("speed" + i, speedDivider);
+            _csound.SetChannel($"speed{i}", speedDivider);
 
-            double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument._range.x, tunedInstrument._range.y + 1));
-            _csound.SetChannel("pitch" + i,  frequency);
+            double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1));
+            _csound.SetChannel($"pitch{i}",  frequency);
+            
+            _csound.SetChannel($"volume{i}",  tunedInstrument.Volume);
         }
     }
 
@@ -115,6 +113,7 @@ public class Sequencer : Singleton<Sequencer>
             Scale.MinorPentatonic => new() { 3, 5, 7, 10 },
             Scale.Blues => new() { 3, 5, 6, 7, 10 },
             Scale.Chromatic => new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            Scale.OneNote => new(),
             _ => throw new ArgumentOutOfRangeException(nameof(scale), scale, null)
         };
 
