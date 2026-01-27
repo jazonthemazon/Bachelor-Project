@@ -18,7 +18,9 @@ public enum Scale
     MinorPentatonic,
     Blues,
     Chromatic,
-    OneNote
+    WholeTone,
+    OneNote,
+    PowerChord
 }
 
 public enum Speed
@@ -113,7 +115,9 @@ public class Sequencer : Singleton<Sequencer>
             Scale.MinorPentatonic => new() { 3, 5, 7, 10 },
             Scale.Blues => new() { 3, 5, 6, 7, 10 },
             Scale.Chromatic => new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
+            Scale.WholeTone => new() { 2, 4, 6, 8, 10 },
             Scale.OneNote => new(),
+            Scale.PowerChord => new() { 7 },
             _ => throw new ArgumentOutOfRangeException(nameof(scale), scale, null)
         };
 
