@@ -392,28 +392,32 @@ MonoBehaviour:
   _scale: 8
   _tunedInstruments:
   - Active: 1
-    Volume: 0.262
+    Volume: 0.15
     InstrumentType: 3
     Probability: 1
-    Speed: 4
+    Speed: 7
+    NoteLength: 2.2
     Range: {x: 2, y: 2}
   - Active: 1
     Volume: 0.262
     InstrumentType: 1
     Probability: 1
-    Speed: 3
+    Speed: 5
+    NoteLength: 3
     Range: {x: 3, y: 3}
   - Active: 1
-    Volume: 0.262
+    Volume: 0.05
     InstrumentType: 2
     Probability: 1
-    Speed: 2
+    Speed: 3
+    NoteLength: 3
     Range: {x: 4, y: 4}
   - Active: 1
     Volume: 0.262
     InstrumentType: 0
-    Probability: 0.555
-    Speed: 0
+    Probability: 0.5
+    Speed: 1
+    NoteLength: 3
     Range: {x: 5, y: 5}
 --- !u!114 &1664142304
 MonoBehaviour:
@@ -427,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d20258c641c94f0ea3dc32cfe3de904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: com.csound.unity::CsoundUnity
-  logCsoundOutput: 1
+  logCsoundOutput: 0
   mute: 0
   processClipAudio: 0
   loudVolumeWarning: 1

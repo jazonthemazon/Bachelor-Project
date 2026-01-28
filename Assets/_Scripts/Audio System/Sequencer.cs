@@ -20,16 +20,22 @@ public enum Scale
     Chromatic,
     WholeTone,
     OneNote,
-    PowerChord
+    PowerChord,
+    HarmonicMinor,
+    MelodicMinor
 }
 
 public enum Speed
 {
     SixteenthNotes,
     EighthNotes,
+    DottedEighthNotes,
     QuarterNotes,
+    DottedQuarterNotes,
     HalfNotes,
-    WholeNotes
+    DottedHalfNotes,
+    WholeNotes,
+    DottedWholeNotes
 }
 
 [RequireComponent(typeof(CsoundUnity))]
@@ -83,13 +89,18 @@ public class Sequencer : Singleton<Sequencer>
             {
                 Speed.SixteenthNotes => 1,
                 Speed.EighthNotes => 2,
+                Speed.DottedEighthNotes => 3,
                 Speed.QuarterNotes => 4,
+                Speed.DottedQuarterNotes => 6,
                 Speed.HalfNotes => 8,
+                Speed.DottedHalfNotes => 12,
                 Speed.WholeNotes => 16,
+                Speed.DottedWholeNotes => 24,
                 _ => throw new ArgumentOutOfRangeException()
             };
             
             _csound.SetChannel($"speed{i}", speedDivider);
+            _csound.SetChannel($"length{i}",  tunedInstrument.NoteLength);
 
             double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1));
             _csound.SetChannel($"pitch{i}",  frequency);
@@ -118,6 +129,8 @@ public class Sequencer : Singleton<Sequencer>
             Scale.WholeTone => new() { 2, 4, 6, 8, 10 },
             Scale.OneNote => new(),
             Scale.PowerChord => new() { 7 },
+            Scale.HarmonicMinor => new() { 2, 3, 5, 7, 8, 11 },
+            Scale.MelodicMinor => new() { 2, 3, 5, 7, 9, 11 },
             _ => throw new ArgumentOutOfRangeException(nameof(scale), scale, null)
         };
 

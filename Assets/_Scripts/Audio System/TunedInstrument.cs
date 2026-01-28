@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum TunedInstrumentType
 {
@@ -16,5 +15,6 @@ public class TunedInstrument : Instrument
     public TunedInstrumentType InstrumentType;
     [Range(0, 1)] public float Probability = 1f;
     public Speed Speed;
+    [Range(0, 10)] public float NoteLength;
     public Vector2Int Range;
 }
