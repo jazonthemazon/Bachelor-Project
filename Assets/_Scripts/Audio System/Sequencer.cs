@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -41,13 +42,18 @@ public enum Speed
 [RequireComponent(typeof(CsoundUnity))]
 public class Sequencer : Singleton<Sequencer>
 {
+    [Header("Global Volume")]
+    [SerializeField] private bool _globalMute;
+    [SerializeField] [Range(0, 1)] private float _globalVolume;
+    
     [Header("Global Tempo")]
     [SerializeField] [Range(0, 1000)] private float _beatsPerMinute;
     
     [Header("Global Notes")]
-    [SerializeField] [Range(330, 660)] private double _a4Frequency = 440.0;
+    [SerializeField] [Range(330, 660)] private float _a4Frequency = 440f;
     [SerializeField] private Note _rootNote;
     [SerializeField] private Scale _scale;
+    [SerializeField] private bool _holdCurrentNotes;
     
     [Header("Tuned Instruments")]
     [SerializeField] private List<TunedInstrument> _tunedInstruments;
@@ -56,6 +62,8 @@ public class Sequencer : Singleton<Sequencer>
     private int _currentBeat;
 
     private const int A4Degree = 57;
+
+    private float _timeOfLastTapTempoPulse;
 
     private void Start()
     {
@@ -78,7 +86,7 @@ public class Sequencer : Singleton<Sequencer>
         {
             TunedInstrument tunedInstrument = _tunedInstruments[i];
             
-            _csound.SetChannel($"active{i}", tunedInstrument.Active ? 1 : 0);
+            _csound.SetChannel($"active{i}", tunedInstrument.Active && !_globalMute ? 1 : 0);
             if (!tunedInstrument.Active) continue;
             
             _csound.SetChannel($"prob{i}", tunedInstrument.Probability);
@@ -102,10 +110,13 @@ public class Sequencer : Singleton<Sequencer>
             _csound.SetChannel($"speed{i}", speedDivider);
             _csound.SetChannel($"length{i}",  tunedInstrument.NoteLength);
 
-            double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1));
-            _csound.SetChannel($"pitch{i}",  frequency);
+            if (!_holdCurrentNotes)
+            {
+                double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1));
+                _csound.SetChannel($"pitch{i}",  frequency);
+            }
             
-            _csound.SetChannel($"volume{i}",  tunedInstrument.Volume);
+            _csound.SetChannel($"volume{i}",  tunedInstrument.Volume * _globalVolume);
         }
     }
 
@@ -152,8 +163,235 @@ public class Sequencer : Singleton<Sequencer>
         return Math.Round(_a4Frequency * Math.Pow(2.0, (noteDegree - A4Degree) / 12.0), 2);
     }
 
-    public void SetTempo(float bpm, float changeDuration)
+    public void MuteGlobal()
     {
-        _beatsPerMinute = bpm;
+        _globalMute = true;
+    }
+
+    public void UnmuteGlobal()
+    {
+        _globalMute = false;
+    }
+
+    public void ToggleMuteGlobal()
+    {
+        _globalMute = !_globalMute;
+    }
+    
+    public void SetGlobalVolume(float targetVolume, float changeDuration)
+    {
+        targetVolume = Mathf.Clamp01(targetVolume);
+        if (changeDuration <= 0)
+        {
+            _globalVolume = targetVolume;
+            return;
+        }
+        
+        StartCoroutine(SetGlobalVolumeCoroutine(targetVolume, changeDuration));
+    }
+
+    private IEnumerator SetGlobalVolumeCoroutine(float targetVolume, float changeDuration)
+    {
+        float startVolume = _globalVolume;
+        
+        float startTime = Time.time;
+        float endTime = startTime + changeDuration;
+
+        while (Time.time < endTime)
+        {
+            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
+            _globalVolume = Mathf.Lerp(startVolume, targetVolume, percentageOfTime);
+            yield return null;
+        }
+        
+        _globalVolume = targetVolume;
+    }
+
+    public void SetTempo(float targetTempo, float changeDuration)
+    {
+        if (changeDuration <= 0 || (int)_beatsPerMinute == (int)targetTempo)
+        {
+            _beatsPerMinute = targetTempo;
+            return;
+        }
+        
+        StartCoroutine(SetTempoCoroutine(targetTempo, changeDuration));
+    }
+
+    private IEnumerator SetTempoCoroutine(float targetTempo, float changeDuration)
+    {
+        float startTempo = _beatsPerMinute;
+        
+        float startTime = Time.time;
+        float endTime = startTime + changeDuration;
+
+        while (Time.time < endTime)
+        {
+            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
+            _beatsPerMinute = Mathf.Lerp(startTempo, targetTempo, percentageOfTime);
+            yield return null;
+        }
+        
+        _beatsPerMinute = targetTempo;
+    }
+
+    [ContextMenu("Send Tap Tempo Pulse")]
+    public void SendTapTempoPulse()
+    {
+        float tapTempoPulseDelta = Time.time - _timeOfLastTapTempoPulse;
+        
+        _beatsPerMinute = 4 * 60 / tapTempoPulseDelta;
+        
+        _timeOfLastTapTempoPulse = Time.time;
+    }
+    
+    public void SetA4Frequency(float targetFrequency, float changeDuration)
+    {
+        if (targetFrequency is < 330f or > 660f)
+        {
+            Debug.LogError("Invalid frequency. Must be between 330 and 660");
+            return;
+        }
+        
+        if (changeDuration <= 0)
+        {
+            _a4Frequency = targetFrequency;
+            return;
+        }
+        
+        StartCoroutine(SetA4FrequencyCoroutine(targetFrequency, changeDuration));
+    }
+
+    private IEnumerator SetA4FrequencyCoroutine(float targetFrequency, float changeDuration)
+    {
+        float startFrequency = _a4Frequency;
+        
+        float startTime = Time.time;
+        float endTime = startTime + changeDuration;
+
+        while (Time.time < endTime)
+        {
+            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
+            _a4Frequency = Mathf.Lerp(startFrequency, targetFrequency, percentageOfTime);
+            yield return null;
+        }
+        
+        _a4Frequency = targetFrequency;
+    }
+
+    public void SetRootNote(Note rootNote)
+    {
+        _rootNote = rootNote;
+    }
+
+    public void SetScale(Scale scale)
+    {
+        _scale = scale;
+    }
+
+    public void HoldCurrentNotes(bool holdCurrentNotes)
+    {
+        _holdCurrentNotes = holdCurrentNotes;
+    }
+
+    public void MuteInstrument(int instrumentIndex)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].Active =  false;
+    }
+    
+    public void UnMuteInstrument(int instrumentIndex)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].Active =  true;
+    }
+    
+    public void SetInstrumentVolume(int instrumentIndex, float targetVolume, float changeDuration)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        targetVolume = Mathf.Clamp01(targetVolume);
+        if (changeDuration <= 0)
+        {
+            _tunedInstruments[instrumentIndex].Volume = targetVolume;
+            return;
+        }
+        
+        StartCoroutine(SetInstrumentVolumeCoroutine(instrumentIndex, targetVolume, changeDuration));
+    }
+
+    private IEnumerator SetInstrumentVolumeCoroutine(int instrumentIndex, float targetVolume, float changeDuration)
+    {
+        TunedInstrument instrument = _tunedInstruments[instrumentIndex];
+        float startVolume = instrument.Volume;
+        
+        float startTime = Time.time;
+        float endTime = startTime + changeDuration;
+
+        while (Time.time < endTime)
+        {
+            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
+            instrument.Volume = Mathf.Lerp(startVolume, targetVolume, percentageOfTime);
+            yield return null;
+        }
+        
+        instrument.Volume = targetVolume;
+    }
+
+    public void SetInstrument(int instrumentIndex, TunedInstrumentType instrumentType)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].InstrumentType =  instrumentType;
+    }
+
+    public void SetInstrumentProbability(int instrumentIndex, float probability)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].Probability = probability;
+    }
+
+    public void SetInstrumentSpeed(int instrumentIndex, Speed speed)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].Speed = speed;
+    }
+
+    public void SetInstrumentNoteLength(int instrumentIndex, float noteLength)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        _tunedInstruments[instrumentIndex].NoteLength = noteLength;
+    }
+
+    public void SetInstrumentRange(int instrumentIndex, int rangeStart, int rangeEnd)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+        
+        if (rangeStart > rangeEnd || rangeStart < 0 || rangeEnd > 8)
+        {
+            Debug.LogError("Invalid Range. Range start must be smaller than range end. All values have to be between 0 and 8.");
+            return;
+        }
+
+        _tunedInstruments[instrumentIndex].Range = new(rangeStart, rangeEnd);
+    }
+
+    private bool IsInstrumentIndexValid(int instrumentIndex)
+    {
+        if (instrumentIndex >= 0 && instrumentIndex < _tunedInstruments.Count) return true;
+        
+        Debug.LogError("Invalid index.");
+        return false;
+    }
+
+    [ContextMenu("Instrument Test")]
+    public void InstrumentTest()
+    {
+        
     }
 }

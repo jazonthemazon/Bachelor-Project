@@ -386,10 +386,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4defa9c706f627d40bb6aa90f06dc9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _globalMute: 0
+  _globalVolume: 1
   _beatsPerMinute: 110
   _a4Frequency: 440
   _rootNote: 0
   _scale: 8
+  _holdCurrentNotes: 0
   _tunedInstruments:
   - Active: 1
     Volume: 0.15
@@ -399,25 +402,25 @@ MonoBehaviour:
     NoteLength: 2.2
     Range: {x: 2, y: 2}
   - Active: 1
-    Volume: 0.262
+    Volume: 0.3
     InstrumentType: 1
     Probability: 1
     Speed: 5
-    NoteLength: 3
+    NoteLength: 8
     Range: {x: 3, y: 3}
   - Active: 1
-    Volume: 0.05
-    InstrumentType: 2
+    Volume: 0.3
+    InstrumentType: 0
     Probability: 1
     Speed: 3
-    NoteLength: 3
+    NoteLength: 5
     Range: {x: 4, y: 4}
   - Active: 1
-    Volume: 0.262
+    Volume: 0.3
     InstrumentType: 0
     Probability: 0.5
     Speed: 1
-    NoteLength: 3
+    NoteLength: 5
     Range: {x: 5, y: 5}
 --- !u!114 &1664142304
 MonoBehaviour:
