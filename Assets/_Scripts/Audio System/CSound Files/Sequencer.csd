@@ -183,6 +183,32 @@ instr Bass
 
 endin
 
+instr 11
+
+idur  = p3 ; Duration
+iamp  = p4 ; Amplitude
+iacc  = p5 ; Accent
+irez  = p6 ; Resonance
+iod   = p7 ; Overdrive
+ilowf = p8 ; Low Frequency
+
+kfenv  linseg    1000*iacc,  .02, 180, .04, 120, idur-.06, ilowf ; Freq Envelope
+kaenv  expseg    .1, .001, 1, .02, 1, .04, .7, idur-.062, .7  ; Amp Envelope
+kdclck linseg    0, .002, 1, idur-.042, 1, .04, 0             ; Declick
+asig   rand      2 ; Random number
+
+aflt   rezzy     asig, kfenv, irez*40         ; Filter
+
+aout1  =         aflt*kaenv*3*iod/iacc        ; Scale the sound
+
+krms   rms       aout1, 1000                  ; Limiter, get rms
+klim   table3    krms*.5, 5, 1                ; Get limiting value
+aout   =         aout1*klim*iamp*kdclck/sqrt(iod)*1.3   ; Scale again and ouput
+
+       outs      aout, aout                   ; Output the sound
+
+       endin
+
 </CsInstruments>
 <CsScore>
 f1 0 8 2 1 0.6 10 100 0.001 ;; 1 rattle

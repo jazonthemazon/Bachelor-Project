@@ -40,7 +40,7 @@ public enum Speed
 }
 
 [RequireComponent(typeof(CsoundUnity))]
-public class Sequencer : Singleton<Sequencer>
+public class MusicGenerator : Singleton<MusicGenerator>
 {
     [Header("Global Volume")]
     [SerializeField] private bool _globalMute;
@@ -138,7 +138,7 @@ public class Sequencer : Singleton<Sequencer>
             Scale.Blues => new() { 3, 5, 6, 7, 10 },
             Scale.Chromatic => new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
             Scale.WholeTone => new() { 2, 4, 6, 8, 10 },
-            Scale.OneNote => new(),
+            Scale.OneNote => new() { },
             Scale.PowerChord => new() { 7 },
             Scale.HarmonicMinor => new() { 2, 3, 5, 7, 8, 11 },
             Scale.MelodicMinor => new() { 2, 3, 5, 7, 9, 11 },

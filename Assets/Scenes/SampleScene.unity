@@ -388,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _globalMute: 0
   _globalVolume: 1
-  _beatsPerMinute: 110
+  _beatsPerMinute: 60
   _a4Frequency: 440
   _rootNote: 0
   _scale: 8
@@ -396,14 +396,14 @@ MonoBehaviour:
   _tunedInstruments:
   - Active: 1
     Volume: 0.15
-    InstrumentType: 3
+    InstrumentType: 0
     Probability: 1
     Speed: 7
     NoteLength: 2.2
     Range: {x: 2, y: 2}
   - Active: 1
     Volume: 0.3
-    InstrumentType: 1
+    InstrumentType: 0
     Probability: 1
     Speed: 5
     NoteLength: 8
@@ -506,7 +506,18 @@ MonoBehaviour:
     pluck p5, p4, p4, 0, 1, .5, 10\r\n    \r\n    outs asig, asig\r\n    \r\nendin\r\n\r\ninstr
     Bass\r\n\r\n    iplk = .2\r\n    kamp = 1\r\n    icps = p4\r\n    kpick = 0.2\r\n   
     krefl = .8\r\n\r\n    apluck wgpluck2 iplk, kamp, icps, kpick, krefl\r\n    apluck
-    dcblock2 apluck\r\n    outs apluck * p5, apluck * p5\r\n\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\nf1
+    dcblock2 apluck\r\n    outs apluck * p5, apluck * p5\r\n\r\nendin\r\n\r\ninstr
+    11\r\n\r\nidur  = p3 ; Duration\r\niamp  = p4 ; Amplitude\r\niacc  = p5 ; Accent\r\nirez 
+    = p6 ; Resonance\r\niod   = p7 ; Overdrive\r\nilowf = p8 ; Low Frequency\r\n\r\nkfenv 
+    linseg    1000*iacc,  .02, 180, .04, 120, idur-.06, ilowf ; Freq Envelope\r\nkaenv 
+    expseg    .1, .001, 1, .02, 1, .04, .7, idur-.062, .7  ; Amp Envelope\r\nkdclck
+    linseg    0, .002, 1, idur-.042, 1, .04, 0             ; Declick\r\nasig   rand     
+    2 ; Random number\r\n\r\naflt   rezzy     asig, kfenv, irez*40         ; Filter\r\n\r\naout1 
+    =         aflt*kaenv*3*iod/iacc        ; Scale the sound\r\n\r\nkrms   rms      
+    aout1, 1000                  ; Limiter, get rms\r\nklim   table3    krms*.5,
+    5, 1                ; Get limiting value\r\naout   =         aout1*klim*iamp*kdclck/sqrt(iod)*1.3  
+    ; Scale again and ouput\r\n\r\n       outs      aout, aout                  
+    ; Output the sound\r\n\r\n       endin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\nf1
     0 8 2 1 0.6 10 100 0.001 ;; 1 rattle\r\nf2 0 8 2 1 0.7 50 500 1000  ;; 1 rubber\r\n\r\ni
     \"Sequencer\" 0 [3600 * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
   _csoundFileName: Sequencer.csd
