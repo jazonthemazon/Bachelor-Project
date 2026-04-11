@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public enum Note { C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B }
@@ -42,6 +43,9 @@ public enum Speed
 [RequireComponent(typeof(CsoundUnity))]
 public class MusicGenerator : Singleton<MusicGenerator>
 {
+    [Header("Mixer")]
+    [SerializeField] private AudioMixer _mixer;
+    
     [Header("Global Volume")]
     [SerializeField] private bool _globalMute;
     [SerializeField] [Range(0, 1)] private float _globalVolume;
@@ -55,10 +59,21 @@ public class MusicGenerator : Singleton<MusicGenerator>
     [SerializeField] private Scale _scale;
     [SerializeField] private bool _holdCurrentNotes;
     
+    [Header("Audio Effects")]
+    
+    [Header("Reverb")]
+    [SerializeField] [Range(0, 1)] private float _reverbAmount;
+    [SerializeField] [Range(0, 20)] private float _reverbLength;
+    
+    [Header("Filter")]
+    [SerializeField] [Range(0, 1)] private float _filterAmount;
+    [SerializeField] [Range(10, 22000)] private float _filterCutoff;
+    
     [Header("Tuned Instruments")]
     [SerializeField] private List<TunedInstrument> _tunedInstruments;
     
     private CsoundUnity _csound;
+    
     private int _currentBeat;
 
     private const int A4Degree = 57;
@@ -118,6 +133,12 @@ public class MusicGenerator : Singleton<MusicGenerator>
             
             _csound.SetChannel($"volume{i}",  tunedInstrument.Volume * _globalVolume);
         }
+
+        _mixer.SetFloat("ReverbAmount", Mathf.Pow(_reverbAmount, 0.2f) * 10000f - 10000f);
+        _mixer.SetFloat("ReverbLength", _reverbLength);
+        
+        _mixer.SetFloat("FilterAmount", _filterAmount * 80f - 80f);
+        _mixer.SetFloat("FilterCutoff", _filterCutoff);
     }
 
     private static Note GetRandomNoteInScale(Note rootNote, Scale scale)
@@ -138,7 +159,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
             Scale.Blues => new() { 3, 5, 6, 7, 10 },
             Scale.Chromatic => new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },
             Scale.WholeTone => new() { 2, 4, 6, 8, 10 },
-            Scale.OneNote => new() { },
+            Scale.OneNote => new(),
             Scale.PowerChord => new() { 7 },
             Scale.HarmonicMinor => new() { 2, 3, 5, 7, 8, 11 },
             Scale.MelodicMinor => new() { 2, 3, 5, 7, 9, 11 },
@@ -389,8 +410,8 @@ public class MusicGenerator : Singleton<MusicGenerator>
         return false;
     }
 
-    [ContextMenu("Instrument Test")]
-    public void InstrumentTest()
+    [ContextMenu("Test")]
+    public void Test()
     {
         
     }

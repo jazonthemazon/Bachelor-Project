@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 1664142304}
   - component: {fileID: 1664142303}
   m_Layer: 0
-  m_Name: Sequencer
+  m_Name: Music Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -386,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4defa9c706f627d40bb6aa90f06dc9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _mixer: {fileID: 24100000, guid: a5b7b0198bf1f0549801399b49910822, type: 2}
   _globalMute: 0
   _globalVolume: 1
   _beatsPerMinute: 60
@@ -393,6 +394,10 @@ MonoBehaviour:
   _rootNote: 0
   _scale: 8
   _holdCurrentNotes: 0
+  _reverbAmount: 1
+  _reverbLength: 5
+  _filterAmount: 1
+  _filterCutoff: 22000
   _tunedInstruments:
   - Active: 1
     Volume: 0.15
@@ -525,7 +530,7 @@ MonoBehaviour:
   _channels: []
   _availableAudioChannels: []
   _audioChannelsBufferSize: 32
-  _drawCsoundString: 1
+  _drawCsoundString: 0
   _drawTestScore: 0
   _drawSettings: 1
   _drawChannels: 0
@@ -548,7 +553,7 @@ AudioSource:
   m_GameObject: {fileID: 1664142301}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a5b7b0198bf1f0549801399b49910822, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
