@@ -63,7 +63,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
     
     [Header("Reverb")]
     [SerializeField] [Range(0, 1)] private float _reverbAmount;
-    [SerializeField] [Range(0, 20)] private float _reverbLength;
+    [SerializeField] [Range(0, 20)] private float _reverbTime;
     
     [Header("Filter")]
     [SerializeField] [Range(0, 1)] private float _filterAmount;
@@ -127,7 +127,11 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
             if (!_holdCurrentNotes)
             {
-                double frequency = GetFrequency(GetRandomNoteInScale(_rootNote, _scale), Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1));
+                Note randomNote = GetRandomNoteInScale(_rootNote, _scale);
+                int octave = Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1);
+                
+                double frequency = GetFrequency(randomNote, octave);
+                
                 _csound.SetChannel($"pitch{i}",  frequency);
             }
             
@@ -135,7 +139,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
         }
 
         _mixer.SetFloat("ReverbAmount", Mathf.Pow(_reverbAmount, 0.2f) * 10000f - 10000f);
-        _mixer.SetFloat("ReverbLength", _reverbLength);
+        _mixer.SetFloat("ReverbLength", _reverbTime);
         
         _mixer.SetFloat("FilterAmount", _filterAmount * 80f - 80f);
         _mixer.SetFloat("FilterCutoff", _filterCutoff);
@@ -181,7 +185,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
     private double GetFrequency(int noteDegree)
     {
-        return Math.Round(_a4Frequency * Math.Pow(2.0, (noteDegree - A4Degree) / 12.0), 2);
+        return Math.Round(_a4Frequency * Math.Pow(2, (noteDegree - A4Degree) / 12.0), 2);
     }
 
     public void MuteGlobal()
@@ -201,8 +205,10 @@ public class MusicGenerator : Singleton<MusicGenerator>
     
     public void SetGlobalVolume(float targetVolume, float changeDuration)
     {
+        targetVolume = Mathf.Max(0f,  targetVolume);
+        
         targetVolume = Mathf.Clamp01(targetVolume);
-        if (changeDuration <= 0)
+        if (changeDuration <= 0f)
         {
             _globalVolume = targetVolume;
             return;
@@ -230,7 +236,9 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
     public void SetTempo(float targetTempo, float changeDuration)
     {
-        if (changeDuration <= 0 || (int)_beatsPerMinute == (int)targetTempo)
+        targetTempo = Mathf.Max(0f,  targetTempo);
+        
+        if (changeDuration <= 0f || (int)_beatsPerMinute == (int)targetTempo)
         {
             _beatsPerMinute = targetTempo;
             return;
@@ -261,7 +269,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
     {
         float tapTempoPulseDelta = Time.time - _timeOfLastTapTempoPulse;
         
-        _beatsPerMinute = 4 * 60 / tapTempoPulseDelta;
+        _beatsPerMinute = 4f * 60f / tapTempoPulseDelta;
         
         _timeOfLastTapTempoPulse = Time.time;
     }
@@ -274,7 +282,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
             return;
         }
         
-        if (changeDuration <= 0)
+        if (changeDuration <= 0f || (int)_a4Frequency == (int)targetFrequency)
         {
             _a4Frequency = targetFrequency;
             return;
@@ -334,7 +342,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
         targetVolume = Mathf.Clamp01(targetVolume);
-        if (changeDuration <= 0)
+        if (changeDuration <= 0f)
         {
             _tunedInstruments[instrumentIndex].Volume = targetVolume;
             return;
@@ -401,6 +409,16 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
         _tunedInstruments[instrumentIndex].Range = new(rangeStart, rangeEnd);
     }
+    
+    public void SetReverbAmount(float reverbAmount)
+    {
+        _reverbAmount =  reverbAmount;
+    }
+
+    public void SetReverbTime(float reverbTime)
+    {
+        _reverbTime =  reverbTime;
+    }
 
     private bool IsInstrumentIndexValid(int instrumentIndex)
     {
@@ -408,11 +426,5 @@ public class MusicGenerator : Singleton<MusicGenerator>
         
         Debug.LogError("Invalid index.");
         return false;
-    }
-
-    [ContextMenu("Test")]
-    public void Test()
-    {
-        
     }
 }
