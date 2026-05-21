@@ -61,16 +61,24 @@ public class MusicGenerator : Singleton<MusicGenerator>
     
     [Header("Audio Effects")]
     
+    [Header("Chorus")]
+    [SerializeField] [Range(0, 1)] private float _chorusAmount;
+    
+    [Header("Echo")]
+    [SerializeField] [Range(0, 1)] private float _echoVolume;
+    [SerializeField] [Range(0.01f, 5)] private float _echoDelayTime;
+    [SerializeField] [Range(0, 1)] private float _echoDecay;
+    
     [Header("Reverb")]
     [SerializeField] [Range(0, 1)] private float _reverbAmount;
-    [SerializeField] [Range(0, 20)] private float _reverbTime;
+    [SerializeField] [Range(0.1f, 20)] private float _reverbTime;
     
     [Header("Filter")]
     [SerializeField] [Range(0, 1)] private float _filterAmount;
     [SerializeField] [Range(10, 22000)] private float _filterCutoff;
     
-    [Header("Tuned Instruments")]
-    [SerializeField] private List<TunedInstrument> _tunedInstruments;
+    [Header("Instruments")]
+    [SerializeField] private List<Instrument> _instruments;
     
     private CsoundUnity _csound;
     
@@ -90,25 +98,25 @@ public class MusicGenerator : Singleton<MusicGenerator>
         // update global parameters
         _csound.SetChannel("tempo", (_beatsPerMinute / 60f) * 4);
 
-        if (_tunedInstruments.Count > 8)
+        if (_instruments.Count > 8)
         {
-            Debug.LogError("Too many tuned instruments! Maximum is 8.");
+            Debug.LogError("Too many instruments! Maximum is 8.");
             return;
         }
         
         // update parameters per instrument
-        for (var i = 0; i < _tunedInstruments.Count; i++)
+        for (var i = 0; i < _instruments.Count; i++)
         {
-            TunedInstrument tunedInstrument = _tunedInstruments[i];
+            Instrument instrument = _instruments[i];
             
-            _csound.SetChannel($"active{i}", tunedInstrument.Active && !_globalMute ? 1 : 0);
-            if (!tunedInstrument.Active) continue;
+            _csound.SetChannel($"active{i}", instrument.Active && !_globalMute ? 1 : 0);
+            if (!instrument.Active) continue;
             
-            _csound.SetChannel($"prob{i}", tunedInstrument.Probability);
+            _csound.SetChannel($"prob{i}", instrument.Probability);
             
-            _csound.SetChannel($"instrument{i}", (int)tunedInstrument.InstrumentType + 2);
+            _csound.SetChannel($"instrument{i}", (int)instrument.InstrumentType + 2);
 
-            int speedDivider = tunedInstrument.Speed switch
+            int speedDivider = instrument.Speed switch
             {
                 Speed.SixteenthNotes => 1,
                 Speed.EighthNotes => 2,
@@ -123,24 +131,34 @@ public class MusicGenerator : Singleton<MusicGenerator>
             };
             
             _csound.SetChannel($"speed{i}", speedDivider);
-            _csound.SetChannel($"length{i}",  tunedInstrument.NoteLength);
+            _csound.SetChannel($"length{i}",  instrument.NoteLength);
 
             if (!_holdCurrentNotes)
             {
-                Note randomNote = GetRandomNoteInScale(_rootNote, _scale);
-                int octave = Random.Range(tunedInstrument.Range.x, tunedInstrument.Range.y + 1);
+                Note randomNote = instrument.PlayRootNoteOnly ? _rootNote : GetRandomNoteInScale(_rootNote, _scale);
+                int octave = Random.Range(instrument.Range.x, instrument.Range.y + 1);
                 
                 double frequency = GetFrequency(randomNote, octave);
                 
                 _csound.SetChannel($"pitch{i}",  frequency);
             }
             
-            _csound.SetChannel($"volume{i}",  tunedInstrument.Volume * _globalVolume);
+            _csound.SetChannel($"volume{i}",  instrument.Volume * _globalVolume);
         }
-
+        
+        // Chorus
+        _mixer.SetFloat("ChorusAmount", _chorusAmount);
+        
+        //Echo
+        _mixer.SetFloat("EchoVolume", _echoVolume);
+        _mixer.SetFloat("EchoDelayTime", _echoDelayTime * 1000f);
+        _mixer.SetFloat("EchoDecay", _echoDecay);
+        
+        // Reverb
         _mixer.SetFloat("ReverbAmount", Mathf.Pow(_reverbAmount, 0.2f) * 10000f - 10000f);
         _mixer.SetFloat("ReverbLength", _reverbTime);
         
+        // Filter
         _mixer.SetFloat("FilterAmount", _filterAmount * 80f - 80f);
         _mixer.SetFloat("FilterCutoff", _filterCutoff);
     }
@@ -327,14 +345,14 @@ public class MusicGenerator : Singleton<MusicGenerator>
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].Active =  false;
+        _instruments[instrumentIndex].Active =  false;
     }
     
     public void UnMuteInstrument(int instrumentIndex)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].Active =  true;
+        _instruments[instrumentIndex].Active =  true;
     }
     
     public void SetInstrumentVolume(int instrumentIndex, float targetVolume, float changeDuration)
@@ -344,7 +362,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
         targetVolume = Mathf.Clamp01(targetVolume);
         if (changeDuration <= 0f)
         {
-            _tunedInstruments[instrumentIndex].Volume = targetVolume;
+            _instruments[instrumentIndex].Volume = targetVolume;
             return;
         }
         
@@ -353,7 +371,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
     private IEnumerator SetInstrumentVolumeCoroutine(int instrumentIndex, float targetVolume, float changeDuration)
     {
-        TunedInstrument instrument = _tunedInstruments[instrumentIndex];
+        Instrument instrument = _instruments[instrumentIndex];
         float startVolume = instrument.Volume;
         
         float startTime = Time.time;
@@ -369,32 +387,32 @@ public class MusicGenerator : Singleton<MusicGenerator>
         instrument.Volume = targetVolume;
     }
 
-    public void SetInstrument(int instrumentIndex, TunedInstrumentType instrumentType)
+    public void SetInstrument(int instrumentIndex, InstrumentType instrumentType)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].InstrumentType =  instrumentType;
+        _instruments[instrumentIndex].InstrumentType =  instrumentType;
     }
 
     public void SetInstrumentProbability(int instrumentIndex, float probability)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].Probability = probability;
+        _instruments[instrumentIndex].Probability = probability;
     }
 
     public void SetInstrumentSpeed(int instrumentIndex, Speed speed)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].Speed = speed;
+        _instruments[instrumentIndex].Speed = speed;
     }
 
     public void SetInstrumentNoteLength(int instrumentIndex, float noteLength)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _tunedInstruments[instrumentIndex].NoteLength = noteLength;
+        _instruments[instrumentIndex].NoteLength = noteLength;
     }
 
     public void SetInstrumentRange(int instrumentIndex, int rangeStart, int rangeEnd)
@@ -407,7 +425,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
             return;
         }
 
-        _tunedInstruments[instrumentIndex].Range = new(rangeStart, rangeEnd);
+        _instruments[instrumentIndex].Range = new(rangeStart, rangeEnd);
     }
     
     public void SetReverbAmount(float reverbAmount)
@@ -422,7 +440,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
     private bool IsInstrumentIndexValid(int instrumentIndex)
     {
-        if (instrumentIndex >= 0 && instrumentIndex < _tunedInstruments.Count) return true;
+        if (instrumentIndex >= 0 && instrumentIndex < _instruments.Count) return true;
         
         Debug.LogError("Invalid index.");
         return false;

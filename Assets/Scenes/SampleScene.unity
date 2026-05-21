@@ -1100,39 +1100,31 @@ MonoBehaviour:
   _rootNote: 0
   _scale: 8
   _holdCurrentNotes: 0
+  _chorusAmount: 0
+  _echoVolume: 0
+  _echoDelayTime: 0.01
+  _echoDecay: 0
   _reverbAmount: 1
-  _reverbTime: 0
-  _filterAmount: 1
+  _reverbTime: 0.1
+  _filterAmount: 0
   _filterCutoff: 22000
-  _tunedInstruments:
+  _instruments:
   - Active: 1
-    Volume: 0.15
-    InstrumentType: 0
+    Volume: 0.5
+    InstrumentType: 3
     Probability: 1
     Speed: 7
-    NoteLength: 2.2
+    NoteLength: 5
     Range: {x: 2, y: 2}
+    PlayRootNoteOnly: 1
   - Active: 1
-    Volume: 0.3
+    Volume: 0.5
     InstrumentType: 0
     Probability: 1
-    Speed: 5
-    NoteLength: 8
-    Range: {x: 3, y: 3}
-  - Active: 1
-    Volume: 0.3
-    InstrumentType: 0
-    Probability: 1
-    Speed: 3
+    Speed: 0
     NoteLength: 5
-    Range: {x: 4, y: 4}
-  - Active: 1
-    Volume: 0.3
-    InstrumentType: 0
-    Probability: 0.5
-    Speed: 1
-    NoteLength: 5
-    Range: {x: 5, y: 5}
+    Range: {x: 4, y: 6}
+    PlayRootNoteOnly: 0
 --- !u!114 &1664142304
 MonoBehaviour:
   m_ObjectHideFlags: 0
