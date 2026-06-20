@@ -136,6 +136,12 @@ public class MusicGenerator : Singleton<MusicGenerator>
             if (!_holdCurrentNotes)
             {
                 Note randomNote = instrument.PlayRootNoteOnly ? _rootNote : GetRandomNoteInScale(_rootNote, _scale);
+
+                if (instrument.Range.x > instrument.Range.y)
+                {
+                    Debug.LogError("Lower limit of range must not be higher than upper limit!");
+                    continue;
+                }
                 int octave = Random.Range(instrument.Range.x, instrument.Range.y + 1);
                 
                 double frequency = GetFrequency(randomNote, octave);
@@ -223,8 +229,6 @@ public class MusicGenerator : Singleton<MusicGenerator>
     
     public void SetGlobalVolume(float targetVolume, float changeDuration)
     {
-        targetVolume = Mathf.Max(0f,  targetVolume);
-        
         targetVolume = Mathf.Clamp01(targetVolume);
         if (changeDuration <= 0f)
         {
@@ -421,11 +425,18 @@ public class MusicGenerator : Singleton<MusicGenerator>
         
         if (rangeStart > rangeEnd || rangeStart < 0 || rangeEnd > 8)
         {
-            Debug.LogError("Invalid Range. Range start must be smaller than range end. All values have to be between 0 and 8.");
+            Debug.LogError("Invalid Range. Range lower limit must be smaller than upper limit. All values have to be between 0 and 8.");
             return;
         }
 
         _instruments[instrumentIndex].Range = new(rangeStart, rangeEnd);
+    }
+
+    public void SetInstrumentPlayRootNoteOnly(int instrumentIndex, bool playRootNoteOnly)
+    {
+        if (!IsInstrumentIndexValid(instrumentIndex)) return;
+
+        _instruments[instrumentIndex].PlayRootNoteOnly = playRootNoteOnly;
     }
     
     public void SetReverbAmount(float reverbAmount)

@@ -964,7 +964,7 @@ Transform:
   m_GameObject: {fileID: 1416780843}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1111,19 +1111,11 @@ MonoBehaviour:
   _instruments:
   - Active: 1
     Volume: 0.5
-    InstrumentType: 3
+    InstrumentType: 1
     Probability: 1
-    Speed: 7
+    Speed: 3
     NoteLength: 5
-    Range: {x: 2, y: 2}
-    PlayRootNoteOnly: 1
-  - Active: 1
-    Volume: 0.5
-    InstrumentType: 0
-    Probability: 1
-    Speed: 0
-    NoteLength: 5
-    Range: {x: 4, y: 6}
+    Range: {x: 3, y: 5}
     PlayRootNoteOnly: 0
 --- !u!114 &1664142304
 MonoBehaviour:
