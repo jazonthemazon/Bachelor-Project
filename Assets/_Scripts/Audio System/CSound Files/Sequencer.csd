@@ -153,7 +153,6 @@ endin
 
 instr Piano
 
-    ;has to be balanced more for better sound
     aOutLeft,aOutRight prepiano p4, 2, 0, 1, p3 / 3, 0.002, 2, 2, 1, 5000, -0.01, 0.09, 80, 0, 0.1, 1, 2
     
     outs aOutLeft * p5, aOutRight * p5
@@ -162,7 +161,6 @@ endin
 
 instr Guitar
 
-    ;has to be balanced more for better sound / still clicking sounds on end of notes - use wgpluck2 instead
     asig pluck p5, p4, p4, 0, 1, .5, 10
     
     outs asig, asig
@@ -182,32 +180,6 @@ instr Bass
     outs apluck * p5, apluck * p5
 
 endin
-
-instr 11
-
-idur  = p3 ; Duration
-iamp  = p4 ; Amplitude
-iacc  = p5 ; Accent
-irez  = p6 ; Resonance
-iod   = p7 ; Overdrive
-ilowf = p8 ; Low Frequency
-
-kfenv  linseg    1000*iacc,  .02, 180, .04, 120, idur-.06, ilowf ; Freq Envelope
-kaenv  expseg    .1, .001, 1, .02, 1, .04, .7, idur-.062, .7  ; Amp Envelope
-kdclck linseg    0, .002, 1, idur-.042, 1, .04, 0             ; Declick
-asig   rand      2 ; Random number
-
-aflt   rezzy     asig, kfenv, irez*40         ; Filter
-
-aout1  =         aflt*kaenv*3*iod/iacc        ; Scale the sound
-
-krms   rms       aout1, 1000                  ; Limiter, get rms
-klim   table3    krms*.5, 5, 1                ; Get limiting value
-aout   =         aout1*klim*iamp*kdclck/sqrt(iod)*1.3   ; Scale again and ouput
-
-       outs      aout, aout                   ; Output the sound
-
-       endin
 
 </CsInstruments>
 <CsScore>

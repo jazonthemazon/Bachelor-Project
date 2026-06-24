@@ -149,7 +149,7 @@ public class MusicGenerator : Singleton<MusicGenerator>
                 _csound.SetChannel($"pitch{i}",  frequency);
             }
             
-            _csound.SetChannel($"volume{i}",  instrument.Volume * _globalVolume);
+            _csound.SetChannel($"volume{i}", instrument.Volume * _globalVolume);
         }
         
         // Chorus
