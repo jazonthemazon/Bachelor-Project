@@ -230,60 +230,23 @@ public class MusicGenerator : Singleton<MusicGenerator>
     public void SetGlobalVolume(float targetVolume, float changeDuration)
     {
         targetVolume = Mathf.Clamp01(targetVolume);
-        if (changeDuration <= 0f)
-        {
-            _globalVolume = targetVolume;
-            return;
-        }
         
-        StartCoroutine(SetGlobalVolumeCoroutine(targetVolume, changeDuration));
-    }
-
-    private IEnumerator SetGlobalVolumeCoroutine(float targetVolume, float changeDuration)
-    {
-        float startVolume = _globalVolume;
-        
-        float startTime = Time.time;
-        float endTime = startTime + changeDuration;
-
-        while (Time.time < endTime)
-        {
-            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
-            _globalVolume = Mathf.Lerp(startVolume, targetVolume, percentageOfTime);
-            yield return null;
-        }
-        
-        _globalVolume = targetVolume;
+        ChangeValue(
+            () => _globalVolume,
+            value => _globalVolume = value,
+            targetVolume,
+            changeDuration);
     }
 
     public void SetTempo(float targetTempo, float changeDuration)
     {
         targetTempo = Mathf.Max(0f,  targetTempo);
         
-        if (changeDuration <= 0f || (int)_beatsPerMinute == (int)targetTempo)
-        {
-            _beatsPerMinute = targetTempo;
-            return;
-        }
-        
-        StartCoroutine(SetTempoCoroutine(targetTempo, changeDuration));
-    }
-
-    private IEnumerator SetTempoCoroutine(float targetTempo, float changeDuration)
-    {
-        float startTempo = _beatsPerMinute;
-        
-        float startTime = Time.time;
-        float endTime = startTime + changeDuration;
-
-        while (Time.time < endTime)
-        {
-            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
-            _beatsPerMinute = Mathf.Lerp(startTempo, targetTempo, percentageOfTime);
-            yield return null;
-        }
-        
-        _beatsPerMinute = targetTempo;
+        ChangeValue(
+            () => _beatsPerMinute,
+            value => _beatsPerMinute = value,
+            targetTempo,
+            changeDuration);
     }
 
     [ContextMenu("Send Tap Tempo Pulse")]
@@ -304,30 +267,11 @@ public class MusicGenerator : Singleton<MusicGenerator>
             return;
         }
         
-        if (changeDuration <= 0f || (int)_a4Frequency == (int)targetFrequency)
-        {
-            _a4Frequency = targetFrequency;
-            return;
-        }
-        
-        StartCoroutine(SetA4FrequencyCoroutine(targetFrequency, changeDuration));
-    }
-
-    private IEnumerator SetA4FrequencyCoroutine(float targetFrequency, float changeDuration)
-    {
-        float startFrequency = _a4Frequency;
-        
-        float startTime = Time.time;
-        float endTime = startTime + changeDuration;
-
-        while (Time.time < endTime)
-        {
-            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
-            _a4Frequency = Mathf.Lerp(startFrequency, targetFrequency, percentageOfTime);
-            yield return null;
-        }
-        
-        _a4Frequency = targetFrequency;
+        ChangeValue(
+            () => _a4Frequency,
+            value => _a4Frequency = value,
+            targetFrequency,
+            changeDuration);
     }
 
     public void SetRootNote(Note rootNote)
@@ -364,31 +308,12 @@ public class MusicGenerator : Singleton<MusicGenerator>
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
         targetVolume = Mathf.Clamp01(targetVolume);
-        if (changeDuration <= 0f)
-        {
-            _instruments[instrumentIndex].Volume = targetVolume;
-            return;
-        }
         
-        StartCoroutine(SetInstrumentVolumeCoroutine(instrumentIndex, targetVolume, changeDuration));
-    }
-
-    private IEnumerator SetInstrumentVolumeCoroutine(int instrumentIndex, float targetVolume, float changeDuration)
-    {
-        Instrument instrument = _instruments[instrumentIndex];
-        float startVolume = instrument.Volume;
-        
-        float startTime = Time.time;
-        float endTime = startTime + changeDuration;
-
-        while (Time.time < endTime)
-        {
-            float percentageOfTime = Mathf.Clamp01((Time.time - startTime) / changeDuration);
-            instrument.Volume = Mathf.Lerp(startVolume, targetVolume, percentageOfTime);
-            yield return null;
-        }
-        
-        instrument.Volume = targetVolume;
+        ChangeValue(
+            () => _instruments[instrumentIndex].Volume,
+            value => _instruments[instrumentIndex].Volume = value,
+            targetVolume,
+            changeDuration);
     }
 
     public void SetInstrument(int instrumentIndex, InstrumentType instrumentType)
@@ -398,11 +323,15 @@ public class MusicGenerator : Singleton<MusicGenerator>
         _instruments[instrumentIndex].InstrumentType =  instrumentType;
     }
 
-    public void SetInstrumentProbability(int instrumentIndex, float probability)
+    public void SetInstrumentProbability(int instrumentIndex, float probability, float changeDuration)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _instruments[instrumentIndex].Probability = probability;
+        ChangeValue(
+            () => _instruments[instrumentIndex].Probability,
+            value => _instruments[instrumentIndex].Probability = value,
+            probability,
+            changeDuration);
     }
 
     public void SetInstrumentSpeed(int instrumentIndex, Speed speed)
@@ -412,11 +341,15 @@ public class MusicGenerator : Singleton<MusicGenerator>
         _instruments[instrumentIndex].Speed = speed;
     }
 
-    public void SetInstrumentNoteLength(int instrumentIndex, float noteLength)
+    public void SetInstrumentNoteLength(int instrumentIndex, float noteLength, float changeDuration)
     {
         if (!IsInstrumentIndexValid(instrumentIndex)) return;
         
-        _instruments[instrumentIndex].NoteLength = noteLength;
+        ChangeValue(
+            () => _instruments[instrumentIndex].NoteLength,
+            value => _instruments[instrumentIndex].NoteLength = value,
+            noteLength,
+            changeDuration);
     }
 
     public void SetInstrumentRange(int instrumentIndex, int rangeStart, int rangeEnd)
@@ -438,22 +371,121 @@ public class MusicGenerator : Singleton<MusicGenerator>
 
         _instruments[instrumentIndex].PlayRootNoteOnly = playRootNoteOnly;
     }
-    
-    public void SetReverbAmount(float reverbAmount)
+
+    public void SetChorusAmount(float chorusAmount, float changeDuration)
     {
-        _reverbAmount =  reverbAmount;
+        ChangeValue(
+            () => _chorusAmount,
+            value => _chorusAmount = value,
+            chorusAmount,
+            changeDuration);
     }
 
-    public void SetReverbTime(float reverbTime)
+    public void SetEchoVolume(float echoAmount, float changeDuration)
     {
-        _reverbTime =  reverbTime;
+        ChangeValue(
+            () => _echoVolume,
+            value => _echoVolume = value,
+            echoAmount,
+            changeDuration);
+    }
+
+    public void SetEchoDelayTime(float echoDelayTime, float changeDuration)
+    {
+        ChangeValue(
+            () => _echoDelayTime,
+            value => _echoDelayTime = value,
+            echoDelayTime,
+            changeDuration);
+    }
+
+    public void SetEchoDecay(float echoDecay, float changeDuration)
+    {
+        ChangeValue(
+            () => _echoDecay,
+            value => _echoDecay = value,
+            echoDecay,
+            changeDuration);
+    }
+    
+    public void SetReverbAmount(float reverbAmount, float changeDuration)
+    {
+        ChangeValue(
+            () => _reverbAmount,
+            value => _reverbAmount = value,
+            reverbAmount,
+            changeDuration);
+    }
+
+    public void SetReverbTime(float reverbTime, float changeDuration)
+    {
+        ChangeValue(
+            () => _reverbTime,
+            value => _reverbTime = value,
+            reverbTime,
+            changeDuration);
+    }
+
+    public void SetFilterAmount(float filterAmount, float changeDuration)
+    {
+        ChangeValue(
+            () => _filterAmount,
+            value => _filterAmount = value,
+            filterAmount,
+            changeDuration);
+    }
+
+    public void SetFilterCutoff(float filterFrequency, float changeDuration)
+    {
+        ChangeValue(
+            ()  => _filterCutoff,
+            value => _filterCutoff = value,
+            filterFrequency,
+            changeDuration);
+    }
+
+    private void ChangeValue(
+        Func<float> getter,
+        Action<float> setter,
+        float targetValue,
+        float duration)
+    {
+        if (duration <= 0f)
+        {
+            setter(targetValue);
+            return;
+        }
+        
+        StartCoroutine(ChangeValueOverTime(getter, setter, targetValue, duration));
+    }
+    
+    private IEnumerator ChangeValueOverTime(
+        Func<float> getter,
+        Action<float> setter,
+        float targetValue,
+        float duration)
+    {
+        float startValue = getter();
+        
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime)
+        {
+            float t = Mathf.Clamp01((Time.time - startTime) / duration);
+            setter(Mathf.Lerp(startValue, targetValue, t));
+            
+            yield return null;
+        }
+        
+        setter(targetValue);
     }
 
     private bool IsInstrumentIndexValid(int instrumentIndex)
     {
         if (instrumentIndex >= 0 && instrumentIndex < _instruments.Count) return true;
         
-        Debug.LogError("Invalid index.");
+        Debug.LogError("Invalid instrument index.");
         return false;
     }
 }
