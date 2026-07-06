@@ -877,447 +877,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1416780843
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1416780845}
-  - component: {fileID: 1416780844}
-  - component: {fileID: 1416780847}
-  - component: {fileID: 1416780848}
-  - component: {fileID: 1416780846}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &1416780844
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416780843}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &1416780845
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416780843}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1416780846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416780843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 978aec624bb84ab41869928d3ef0d6cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
-  _speed: 10
---- !u!50 &1416780847
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416780843}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &1416780848
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416780843}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!1 &1664142301
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1664142302}
-  - component: {fileID: 1664142305}
-  - component: {fileID: 1664142304}
-  - component: {fileID: 1664142303}
-  m_Layer: 0
-  m_Name: Music Generator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1664142302
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664142301}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1664142303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664142301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4defa9c706f627d40bb6aa90f06dc9bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _mixer: {fileID: 24100000, guid: a5b7b0198bf1f0549801399b49910822, type: 2}
-  _globalMute: 0
-  _globalVolume: 1
-  _beatsPerMinute: 100
-  _a4Frequency: 440
-  _rootNote: 0
-  _scale: 8
-  _holdCurrentNotes: 0
-  _chorusAmount: 0
-  _echoVolume: 0
-  _echoDelayTime: 0.01
-  _echoDecay: 0
-  _reverbAmount: 1
-  _reverbTime: 0.1
-  _filterAmount: 0
-  _filterCutoff: 22000
-  _instruments:
-  - Active: 1
-    Volume: 0.438
-    InstrumentType: 0
-    Probability: 1
-    Speed: 3
-    NoteLength: 4.69
-    Range: {x: 3, y: 5}
-    PlayRootNoteOnly: 0
---- !u!114 &1664142304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664142301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d20258c641c94f0ea3dc32cfe3de904, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.csound.unity::CsoundUnity
-  logCsoundOutput: 0
-  mute: 0
-  processClipAudio: 0
-  loudVolumeWarning: 1
-  loudWarningThreshold: 10
-  overrideSamplingRate: 0
-  audioRate: 48000
-  controlRate: 48000
-  csoundScore: 
-  environmentSettings: []
-  _csoundFileGUID: 447d0a095003c1e42831f4e504becc5b
-  _csoundString: "<Cabbage>\r\n</Cabbage>\r\n<CsoundSynthesizer>\r\n<CsOptions>\r\n-odac\r\n</CsOptions>\r\n<CsInstruments>\r\n\r\nsr
-    = 48000\r\nksmps = 32\r\nnchnls = 2\r\n0dbfs  = 1\r\n\r\ninstr Sequencer\r\n   
-    kBeat init 0\r\n    \r\n    ;global parameters\r\n    kTempo chnget \"tempo\"\r\n   
-    \r\n    ;instrument specific parameters\r\n    \r\n    ;active\r\n    kActive0
-    chnget \"active0\"\r\n    kActive1 chnget \"active1\"\r\n    kActive2 chnget
-    \"active2\"\r\n    kActive3 chnget \"active3\"\r\n    kActive4 chnget \"active4\"\r\n   
-    kActive5 chnget \"active5\"\r\n    kActive6 chnget \"active6\"\r\n    kActive7
-    chnget \"active7\"\r\n    \r\n    ;probabilities\r\n    kProb0 chnget \"prob0\"\r\n   
-    kProb1 chnget \"prob1\"\r\n    kProb2 chnget \"prob2\"\r\n    kProb3 chnget \"prob3\"\r\n   
-    kProb4 chnget \"prob4\"\r\n    kProb5 chnget \"prob5\"\r\n    kProb6 chnget \"prob6\"\r\n   
-    kProb7 chnget \"prob7\"\r\n    \r\n    ;speeds\r\n    kSpeed0 chnget \"speed0\"\r\n   
-    kSpeed1 chnget \"speed1\"\r\n    kSpeed2 chnget \"speed2\"\r\n    kSpeed3 chnget
-    \"speed3\"\r\n    kSpeed4 chnget \"speed4\"\r\n    kSpeed5 chnget \"speed5\"\r\n   
-    kSpeed6 chnget \"speed6\"\r\n    kSpeed7 chnget \"speed7\"\r\n    \r\n    ;instruments\r\n   
-    kInstrument0 chnget \"instrument0\"\r\n    kInstrument1 chnget \"instrument1\"\r\n   
-    kInstrument2 chnget \"instrument2\"\r\n    kInstrument3 chnget \"instrument3\"\r\n   
-    kInstrument4 chnget \"instrument4\"\r\n    kInstrument5 chnget \"instrument5\"\r\n   
-    kInstrument6 chnget \"instrument6\"\r\n    kInstrument7 chnget \"instrument7\"\r\n   
-    \r\n    ;pitches\r\n    kPitch0 chnget \"pitch0\"\r\n    kPitch1 chnget \"pitch1\"\r\n   
-    kPitch2 chnget \"pitch2\"\r\n    kPitch3 chnget \"pitch3\"\r\n    kPitch4 chnget
-    \"pitch4\"\r\n    kPitch5 chnget \"pitch5\"\r\n    kPitch6 chnget \"pitch6\"\r\n   
-    kPitch7 chnget \"pitch7\"\r\n    \r\n    ;note lengths\r\n    kLength0 chnget
-    \"length0\"\r\n    kLength1 chnget \"length1\"\r\n    kLength2 chnget \"length2\"\r\n   
-    kLength3 chnget \"length3\"\r\n    kLength4 chnget \"length4\"\r\n    kLength5
-    chnget \"length5\"\r\n    kLength6 chnget \"length6\"\r\n    kLength7 chnget
-    \"length7\"\r\n    \r\n    ;volumes\r\n    kVolume0 chnget \"volume0\"\r\n   
-    kVolume1 chnget \"volume1\"\r\n    kVolume2 chnget \"volume2\"\r\n    kVolume3
-    chnget \"volume3\"\r\n    kVolume4 chnget \"volume4\"\r\n    kVolume5 chnget
-    \"volume5\"\r\n    kVolume6 chnget \"volume6\"\r\n    kVolume7 chnget \"volume7\"\r\n   
-    \r\n    if metro(kTempo) == 1 then\r\n        \r\n        kRand0 random 0, 1\r\n       
-    \r\n        if kActive0 == 1 && kBeat % kSpeed0 == 0 && kRand0 < kProb0 then\r\n           
-    event \"i\", kInstrument0, 0, kLength0, kPitch0, kVolume0\r\n        endif\r\n       
-    \r\n        kRand1 random 0, 1\r\n        \r\n        if kActive1 == 1 && kBeat
-    % kSpeed1 == 0 && kRand1 < kProb1 then\r\n            event \"i\", kInstrument1,
-    0, kLength1, kPitch1, kVolume1\r\n        endif\r\n        \r\n        kRand2
-    random 0, 1\r\n        \r\n        if kActive2 == 1 && kBeat % kSpeed2 == 0 &&
-    kRand2 < kProb2 then\r\n            event \"i\", kInstrument2, 0, kLength2, kPitch2,
-    kVolume2\r\n        endif\r\n        \r\n        kRand3 random 0, 1\r\n       
-    \r\n        if kActive3 == 1 && kBeat % kSpeed3 == 0 && kRand3 < kProb3 then\r\n           
-    event \"i\", kInstrument3, 0, kLength3, kPitch3, kVolume3\r\n        endif\r\n       
-    \r\n        kRand4 random 0, 1\r\n        \r\n        if kActive4 == 1 && kBeat
-    % kSpeed4 == 0 && kRand4 < kProb4 then\r\n            event \"i\", kInstrument4,
-    0, kLength4, kPitch4, kVolume4\r\n        endif\r\n        \r\n        kRand5
-    random 0, 1\r\n        \r\n        if kActive5 == 1 && kBeat % kSpeed5 == 0 &&
-    kRand5 < kProb5 then\r\n            event \"i\", kInstrument5, 0, kLength5, kPitch5,
-    kVolume5\r\n        endif\r\n        \r\n        kRand6 random 0, 1\r\n       
-    \r\n        if kActive6 == 1 && kBeat % kSpeed6 == 0 && kRand6 < kProb6 then\r\n           
-    event \"i\", kInstrument6, 0, kLength6, kPitch6, kVolume6\r\n        endif\r\n       
-    \r\n        kRand7 random 0, 1\r\n        \r\n        if kActive7 == 1 && kBeat
-    % kSpeed7 == 0 && kRand7 < kProb7 then\r\n            event \"i\", kInstrument7,
-    0, kLength7, kPitch7, kVolume7\r\n        endif\r\n        \r\n        kBeat
-    = kBeat + 1\r\n    endif\r\nendin\r\n\r\ninstr Synth\r\n\r\n    a1 expon .1,
-    p3, 0.0001\r\n    aOut oscili a1, p4\r\n    outs aOut * p5, aOut * p5\r\n   
-    \r\nendin\r\n\r\ninstr Piano\r\n\r\n    aOutLeft,aOutRight prepiano p4, 2, 0,
-    1, p3 / 3, 0.002, 2, 2, 1, 5000, -0.01, 0.09, 80, 0, 0.1, 1, 2\r\n    \r\n   
-    outs aOutLeft * p5, aOutRight * p5\r\n    \r\nendin\r\n\r\ninstr Guitar\r\n\r\n   
-    asig pluck p5, p4, p4, 0, 1, .5, 10\r\n    \r\n    outs asig, asig\r\n    \r\nendin\r\n\r\ninstr
-    Bass\r\n\r\n    iplk = .2\r\n    kamp = 1\r\n    icps = p4\r\n    kpick = 0.2\r\n   
-    krefl = .8\r\n\r\n    apluck wgpluck2 iplk, kamp, icps, kpick, krefl\r\n    apluck
-    dcblock2 apluck\r\n    outs apluck * p5, apluck * p5\r\n\r\nendin\r\n\r\n</CsInstruments>\r\n<CsScore>\r\nf1
-    0 8 2 1 0.6 10 100 0.001 ;; 1 rattle\r\nf2 0 8 2 1 0.7 50 500 1000  ;; 1 rubber\r\n\r\ni
-    \"Sequencer\" 0 [3600 * 12]\r\n</CsScore>\r\n</CsoundSynthesizer>"
-  _csoundFileName: Sequencer.csd
-  _csoundAsset: {fileID: 102900000, guid: 447d0a095003c1e42831f4e504becc5b, type: 3}
-  _channels: []
-  _availableAudioChannels: []
-  _audioChannelsBufferSize: 32
-  _drawCsoundString: 0
-  _drawTestScore: 0
-  _drawSettings: 1
-  _drawChannels: 0
-  _drawAudioChannels: 0
-  _drawPresets: 0
-  _drawPresetsLoad: 0
-  _drawPresetsSave: 0
-  _drawPresetsImport: 0
-  _showRuntimeEnvironmentPath: 0
-  _currentPreset: 
-  _currentPresetSaveFolder: 
-  _currentPresetLoadFolder: 
-  webGLAssetsList: []
---- !u!82 &1664142305
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664142301}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: a5b7b0198bf1f0549801399b49910822, type: 2}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1748536754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,14 +1235,128 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1001 &2705725451261788124
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3342513972684000331, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_Name
+      value: Music Generator
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928543662695241143, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8c8a1d6be07ee1846a278f1ea3d70d2e, type: 3}
+--- !u!1001 &5286939871947640316
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5484062082268736241, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615768652010694073, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c7e40e53770dbe44f90812a7f7d7f14c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 1664142302}
-  - {fileID: 1416780845}
+  - {fileID: 2705725451261788124}
+  - {fileID: 5286939871947640316}
   - {fileID: 826855450}
   - {fileID: 489786147}
   - {fileID: 1908667434}

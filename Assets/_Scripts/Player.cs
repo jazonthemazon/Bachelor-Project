@@ -31,8 +31,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         _movement = _moveAction.ReadValue<Vector2>();
-        
-        MusicGenerator.Instance.SetTempo((transform.position.y + 5f) * 12 , 0f);
     }
 
     private void FixedUpdate()
